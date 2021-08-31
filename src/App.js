@@ -1,25 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Layout from './containers/Layout';
+import Home from './pages/Home';
+import { HashRouter, Switch, Route } from 'react-router-dom';
+import { PRODUCTS, CLIENTS, ORDERS, ADD_PRODUCTS } from './settings/constant';
+import Products from './pages/Products';
+import Clients from './pages/Clients';
+import Orders from './pages/Orders';
+import AddProducts from './pages/Products/add';
+import axios from 'axios';
 
-function App() {
+axios.defaults.baseURL = 'http://localhost:1337';
+
+const MyApp = () => {
+  const allRoutes = [
+    {
+      path: '/',
+      compnent: <Home />,
+      exact: true,
+    },
+    {
+      path: PRODUCTS,
+      compnent: <Products />,
+      exact: true,
+    },
+    {
+      path: CLIENTS,
+      compnent: <Clients />,
+      exact: true,
+    },
+    {
+      path: ORDERS,
+      compnent: <Orders />,
+      exact: true,
+    },
+    {
+      path: ADD_PRODUCTS,
+      compnent: <AddProducts />,
+      exact: true,
+    },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <div>
+        <Layout>
+          <Switch>
+            {allRoutes.map((route, i) => {
+              return (
+                <Route
+                  path={route.path}
+                  exact={route.exact}
+                  key={i + route.path}
+                >
+                  {route.compnent}
+                </Route>
+              );
+            })}
+          </Switch>
+        </Layout>
+      </div>
+    </HashRouter>
   );
-}
+};
 
-export default App;
+export default MyApp;
