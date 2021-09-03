@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Select from 'react-select';
 
-const options = [
-  { value: 'PCS', label: 'PCS' },
-  { value: 'MTR', label: 'MTR' },
-  { value: 'DOZ', label: 'DOZ' },
-  { value: 'CMS', label: 'CMS' },
-];
-
-const SimpleSelect = ({ handleChange }) => {
-  return <Select options={options} onChange={handleChange} />;
-};
+const SimpleSelect = React.forwardRef((fields, ref) => {
+  return <Select {...fields} defaultOptions innerRef={ref} />;
+});
 
 export default SimpleSelect;

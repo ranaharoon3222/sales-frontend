@@ -1,20 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AsyncSelect from 'react-select/async';
 
 const Index = (path, label = 'name') => {
-  const [search, setSearch] = useState('');
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const handleSearchChange = (value) => {
-    setSearch(value);
-  };
-
-  const handleChangeSelect = (value) => {
-    setSelectedValue(value);
-  };
-
-  const loadOptions = async () => {
-    const url = `http://localhost:1337/${path}?_q=${search}`;
+  const loadOptions = async (inputValue) => {
+    const url = `http://localhost:1337/${path}?_q=${inputValue}`;
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -26,21 +15,19 @@ const Index = (path, label = 'name') => {
     }
   };
 
-  const selectComponent = () => {
+  const SelectComponent = React.forwardRef((fields, ref) => {
     return (
       <AsyncSelect
+        {...fields}
         cacheOptions
         loadOptions={loadOptions}
-        onInputChange={handleSearchChange}
         defaultOptions
-        value={selectedValue}
-        onChange={handleChangeSelect}
+        ref={ref}
       />
     );
-  };
+  });
 
-  const selectValue = selectedValue.value;
-  return { selectComponent, selectValue };
+  return { SelectComponent };
 };
 
 export default Index;

@@ -14,9 +14,12 @@ import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
 import PaginationToolBar from '../../components/PgainationToolBar';
+import { useHistory } from 'react-router-dom';
+import { PRODUCTS } from '../../settings/constant';
 
 const Products = () => {
   const [value, setValue] = useState('');
+  const history = useHistory();
 
   const query = qs.stringify({
     _where: {
@@ -24,12 +27,11 @@ const Products = () => {
         { product_name_contains: value },
         { item_code_contains: value },
         { model_no_contains: value },
-        { 'brand.name_contains': value },
       ],
     },
   });
   const { handlePageChange, apiData, loading, error } = usePagination({
-    path: '/products',
+    path: PRODUCTS,
     filters: `&${query}`,
     limit: 25,
   });
@@ -83,6 +85,10 @@ const Products = () => {
   ];
 
   const columns = apiData.map((item, index) => {
+    const pushToSinglePage = () => {
+      history.push(`${PRODUCTS}/${item.id}`);
+    };
+
     const {
       product_name,
       item_code,
@@ -95,8 +101,8 @@ const Products = () => {
       brand,
     } = item;
     return (
-      <Tr key={index}>
-        <Td> {product_name} </Td>
+      <Tr key={index} onClick={pushToSinglePage} cursor='pointer'>
+        <Td>{product_name}</Td>
         <Td isNumeric> {item_code} </Td>
         <Td isNumeric> {model_no} </Td>
         <Td isNumeric> {purchase_price} </Td>

@@ -18,10 +18,6 @@ const ProductTable = () => {
     return error.message;
   }
 
-  // const result = formatDistanceToNow(new Date(apiData[0].created_at));
-  // console.log(result);
-  console.log(apiData);
-
   const columns = apiData.map((item, index) => {
     return item.order_comp.map((order) => {
       const isdiscounted = item.top_level_discount;

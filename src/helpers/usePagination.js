@@ -5,7 +5,7 @@ export const usePagination = ({ path, filters, limit = 5 }) => {
   const [page, setPage] = useState(0);
   const { apiData, loading, error } = useFetch({
     method: 'GET',
-    url: `${path}?_start=${page}&_limit=${limit}${filters}`,
+    url: `${path}/?_sort=created_at:DESC&_start=${page}&_limit=${limit}${filters}`,
   });
   const handlePageChange = (add) => {
     if (add === 'add') {

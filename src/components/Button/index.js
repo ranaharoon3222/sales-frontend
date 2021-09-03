@@ -1,13 +1,11 @@
 import React from 'react';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 
-const Index = () => {
+const Index = ({ children, ...rest }) => {
   return (
-    <div>
-      <Button colorScheme='teal' size='lg'>
-        Button
-      </Button>
-    </div>
+    <Button colorScheme='purple' mt={4} size='md' {...rest}>
+      {children}
+    </Button>
   );
 };
 

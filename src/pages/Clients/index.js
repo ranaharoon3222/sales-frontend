@@ -14,8 +14,11 @@ import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
 import PaginationToolBar from '../../components/PgainationToolBar';
+import { CLIENTS } from '../../settings/constant';
+import { useHistory } from 'react-router-dom';
 
 const Products = () => {
+  const history = useHistory();
   const [value, setValue] = useState('');
 
   const query = qs.stringify({
@@ -25,13 +28,11 @@ const Products = () => {
         { mobile_no_contains: value },
         { cnic_contains: value },
         { occupation_contains: value },
-        { prefered_address_contains: value },
-        { permanent_address_contains: value },
       ],
     },
   });
   const { handlePageChange, apiData, loading, error } = usePagination({
-    path: '/clients',
+    path: CLIENTS,
     filters: `&${query}`,
     limit: 25,
   });
@@ -77,9 +78,15 @@ const Products = () => {
   ];
 
   const columns = apiData.map((item, index) => {
-    const { Name, occupation, age, mobile_no, cnic, refrences, orders } = item;
+    const { Name, occupation, age, mobile_no, cnic, refrences, orders, id } =
+      item;
+
+    const pushToSinglePage = () => {
+      history.push(`${CLIENTS}/${id}`);
+    };
+
     return (
-      <Tr key={index}>
+      <Tr key={index} onClick={pushToSinglePage} cursor='pointer'>
         <Td> {Name} </Td>
         <Td> {occupation} </Td>
         <Td isNumeric> {age} </Td>
