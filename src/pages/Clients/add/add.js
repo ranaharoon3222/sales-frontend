@@ -21,8 +21,7 @@ const Index = () => {
     error,
   } = useCreate();
 
-  const { productFields, register, formError, handleChange, handleSubmit } =
-    useFieldOptions;
+  const { productFields, register, formError, handleSubmit } = useFieldOptions;
 
   const productInputs = () => {
     return productFields.map((input, i) => {
@@ -41,7 +40,7 @@ const Index = () => {
                   placeholder={input.name.toUpperCase()}
                   type={input.type ? input.type : 'text'}
                   value={input.value}
-                  onChange={handleChange}
+                  onChange={input.onChange}
                   disabled={input.disabled}
                 />
               ) : (

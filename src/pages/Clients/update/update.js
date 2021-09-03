@@ -28,7 +28,6 @@ const Index = () => {
     productFields,
     register,
     formError,
-    handleChange,
     handleSubmit,
     loading: apiLoading,
     apiError,
@@ -70,7 +69,7 @@ const Index = () => {
                     name={input.name}
                     placeholder={input.name.toUpperCase()}
                     type={input.type ? input.type : 'text'}
-                    {...(input.value !== 'file' ? { value: input.value } : {})}
+                    {...(input.type !== 'file' ? { value: input.value } : {})}
                     onChange={input.onChange}
                     disabled={input.disabled}
                   />

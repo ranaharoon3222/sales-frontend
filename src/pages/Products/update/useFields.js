@@ -80,7 +80,7 @@ export const useFields = () => {
     });
   }, [apiData]);
 
-  const { SelectComponent, selectValue } = useSelect('brands');
+  const { SelectComponent } = useSelect('brands');
 
   const productFields = [
     {
@@ -171,7 +171,6 @@ export const useFields = () => {
 
   const useFieldOptions = {
     productFields,
-    selectValue,
     SelectComponent,
     register,
     handleSubmit,

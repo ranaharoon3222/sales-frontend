@@ -11,7 +11,7 @@ const options = [
 ];
 
 export const AllFields = ({ control, apiData, handleChange }) => {
-  const { SelectComponent, selectValue } = useSelect('refrences');
+  const { SelectComponent } = useSelect('refrences');
   const { arrayValues: refrences } = useArrayValues({
     apiData,
     appiId: 'refrences',

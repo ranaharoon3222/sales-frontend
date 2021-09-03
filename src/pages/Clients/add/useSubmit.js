@@ -5,10 +5,12 @@ import { CLIENTS } from '../../../settings/constant';
 const useCreate = () => {
   const { useFieldOptions } = useFields();
 
-  const { reset } = useFieldOptions;
+  const { reset, image, cnic_image } = useFieldOptions;
+
   const { submitValues, onSubmit } = useSubmit({
     reset,
     path: CLIENTS,
+    files: { image, cnic_image },
   });
 
   const { loading, success, successResponse, errorResponse, error } =

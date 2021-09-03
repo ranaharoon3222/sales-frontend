@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useCleanObjects } from './useCleanObjects';
 import { useResponses } from './useResponses';
 import { useToasts } from './useToast';
-import { ref } from 'yup';
 
 axios.baseURL = 'http://localhost:1337';
 
@@ -35,7 +34,7 @@ export const useSubmit = ({
 
     let refrences = [];
     const isRefrences = data?.refrences;
-    isRefrences.forEach((item) => {
+    isRefrences?.forEach((item) => {
       return refrences.push({ id: item.value });
     });
 
