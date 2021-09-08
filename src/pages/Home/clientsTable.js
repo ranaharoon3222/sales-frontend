@@ -5,16 +5,13 @@ import { GET_RECENT_CLIENTS } from '../../settings/constant';
 import Skeletn from '../../components/skeleton';
 
 const ProductTable = () => {
-  const { apiData, loading, error } = useFetch({
-    method: 'GET',
-    url: GET_RECENT_CLIENTS,
-  });
+  const { apiData, loading, error } = useFetch(GET_RECENT_CLIENTS);
 
   if (loading) {
     return <Skeletn />;
   }
   if (error) {
-    return error.message;
+    return <Skeletn />;
   }
 
   const columns = apiData.map((item, index) => {

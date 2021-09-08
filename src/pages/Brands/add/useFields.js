@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../schema';
 import { AllFields } from '../allFields';
-import { useImageUpload } from '../../../helpers/useImageUpload';
 
 export const useFields = () => {
   const {
@@ -15,9 +14,7 @@ export const useFields = () => {
     resolver: yupResolver(schema),
   });
 
-  const { handleChange, cnic_image, image } = useImageUpload();
-
-  const { productFields } = AllFields({ control, handleChange: handleChange });
+  const { productFields } = AllFields({ control });
 
   const useFieldOptions = {
     productFields,
@@ -26,8 +23,6 @@ export const useFields = () => {
     formError: errors,
     control,
     reset,
-    image,
-    cnic_image,
   };
 
   return { useFieldOptions };

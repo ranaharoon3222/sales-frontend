@@ -26,14 +26,7 @@ export const useFields = () => {
 
   let { id } = useParams();
 
-  const {
-    apiData,
-    loading,
-    error: apiError,
-  } = useFetch({
-    method: 'GET',
-    url: `/products/${id}`,
-  });
+  const { apiData, loading, error: apiError } = useFetch(`/products/${id}`);
 
   const [sValue, setSvalue] = useState({
     purchase_price: '',

@@ -3,10 +3,7 @@ import { useFetch } from '../../helpers/axios';
 import { Box, Text } from '@chakra-ui/react';
 
 const ProductTable = ({ url, heading }) => {
-  const { apiData, error } = useFetch({
-    method: 'GET',
-    url: url,
-  });
+  const { apiData, error } = useFetch(url);
 
   if (error) {
     return error.message;

@@ -7,9 +7,15 @@ export const ADD_CLIENTS = '/clients/add';
 export const UPDATE_CLIENTS = '/clients/:id';
 export const REFRENCES = '/refrences';
 export const ORDERS = '/orders';
+export const ADD_ORDERS = '/orders/add';
+export const UPDATE_ORDERS = '/orders/:id';
 export const BRANDS = '/brands';
+export const ADD_BRANDS = '/brands/add';
+export const UPDATE_BRANDS = '/brands/:id';
 export const GET_RECENT_PRODUCTS = `${PRODUCTS}${RECENT_FILTER}`;
 export const GET_RECENT_CLIENTS = `${CLIENTS}${RECENT_FILTER}`;
 export const GET_RECENT_REFRENCES = `${REFRENCES}${RECENT_FILTER}`;
 export const GET_RECENT_ORDERS = `${ORDERS}${RECENT_FILTER}`;
 export const GET_RECENT_BRANDS = `${BRANDS}${RECENT_FILTER}`;
+
+export const PAGINATION_LIMIT = 5;

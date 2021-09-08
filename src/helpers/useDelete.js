@@ -12,7 +12,10 @@ export const useDelete = ({ path, redirect, title }) => {
       });
       if (res.ok) {
         toast({ title, status: 'error' });
-        history.push(redirect);
+        window.location.href = `http://localhost:5000/#${redirect}`;
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       }
     } catch (error) {
       return error.message;

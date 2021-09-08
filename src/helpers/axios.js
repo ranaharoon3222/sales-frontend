@@ -1,58 +1,34 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import useSwr from 'swr';
+import { useToasts } from './useToast';
 
-axios.defaults.baseURL = 'http://localhost:1337';
+const baseUrl = 'http://localhost:1337';
 
-/**
- fixed :
-  - no need to JSON.stringify to then immediatly do a JSON.parse
-  - don't use export defaults, because default imports are hard to search for
-  - axios already support generic request in one parameter, no need to call specialized ones
-**/
-export const useFetch = (axiosParams) => {
-  const [apiData, setResponse] = useState(undefined);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
+export const useFetch = (path, name) => {
+  const { toast } = useToasts();
 
-  const fetchData = async (params) => {
-    try {
-      const result = await axios.request(params);
-      setResponse(result.data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!path) {
+    throw new Error('Path is required');
+  }
 
-  useEffect(() => {
-    fetchData(axiosParams);
-  }, [axiosParams.url]); // execute once only
+  const url = name ? baseUrl + path + '/' + name : baseUrl + path;
+  const {
+    data: apiData,
+    error,
+    isValidating,
+    mutate,
+  } = useSwr(url, {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return;
 
-  return { apiData, error, loading };
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return;
+
+      // Retry after 5 seconds.
+      setTimeout(() => revalidate({ retryCount }), 5000);
+    },
+    onError: () => toast({ title: 'Error While Fetching', status: 'error' }),
+  });
+
+  return { apiData, error, loading: !apiData && !error, isValidating, mutate };
 };
-
-// /**
-//  fixed :
-//   - no need to JSON.stringify to then immediatly do a JSON.parse
-//   - don't use export defaults, because default imports are hard to search for
-//   - axios already support generic request in one parameter, no need to call specialized ones
-// **/
-// export const usePost = (axiosParams) => {
-//   const [apiData, setResponse] = useState(undefined);
-//   const [error, setError] = useState('');
-//   const [loading, setLoading] = useState(true);
-
-//   const fetchData = async (params) => {
-//     try {
-//       const result = await axios.request(params);
-//       setResponse(result.data);
-//     } catch (error) {
-//       setError(error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return { apiData, error, loading };
-// };

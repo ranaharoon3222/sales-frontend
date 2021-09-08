@@ -7,7 +7,7 @@ export const useToasts = () => {
     message({
       title: title,
       status: status,
-      duration: 2000,
+      duration: 3000,
       isClosable: true,
     });
   };

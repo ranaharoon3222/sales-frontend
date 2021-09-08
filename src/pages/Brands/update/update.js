@@ -11,7 +11,7 @@ import useCreate from './useCreate';
 import Skeleton from '../../../components/skeleton';
 import Button from '../../../components/Button';
 import { useDelete } from '../../../helpers/useDelete';
-import { CLIENTS } from '../../../settings/constant';
+import { BRANDS } from '../../../settings/constant';
 
 const Index = () => {
   const {
@@ -22,7 +22,6 @@ const Index = () => {
     onSubmit,
     useFieldOptions,
     error,
-    ClientImages,
   } = useCreate();
 
   const {
@@ -36,16 +35,16 @@ const Index = () => {
   } = useFieldOptions;
 
   const { handleDelete } = useDelete({
-    path: `${CLIENTS}/${id}`,
-    title: 'Client Deleted Succcessfully',
-    redirect: CLIENTS,
+    path: `${BRANDS}/${id}`,
+    title: 'Brand Deleted Succcessfully',
+    redirect: BRANDS,
   });
 
   if (apiLoading) {
     return <Skeleton />;
   }
   if (apiError) {
-    return apiError.meesage;
+    return 'apiError.meesage';
   }
 
   return (
@@ -53,12 +52,8 @@ const Index = () => {
       {error && errorResponse()}
       {success && successResponse()}
       <Box boxShadow='md' bg='white' p={5}>
-        <SimpleGrid columns={2} spacingX={1} spacingY={1}>
-          {ClientImages('image')}
-          {ClientImages('cnic_image')}
-        </SimpleGrid>
         <Text fontSize='3xl' mb={5}>
-          Update Client
+          Update Brand
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
           <SimpleGrid columns={2} spacingX={5} spacingY={3}>

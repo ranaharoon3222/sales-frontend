@@ -7,7 +7,6 @@ import {
   Flex,
   HStack,
   VStack,
-  Icon,
   useColorModeValue,
   Drawer,
   DrawerContent,
@@ -18,12 +17,77 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react';
 import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
 
 import { Link as RouterLink } from 'react-router-dom';
-import { useFetch } from '../../helpers/axios';
-import Skeleton from '../../components/skeleton';
+import * as menus from '../../settings/constant';
+
+const menuItems = [
+  {
+    name: 'Dashboard',
+    path: '/',
+  },
+  {
+    name: 'Products',
+    subMenu: [
+      {
+        name: 'List Products',
+        path: menus.PRODUCTS,
+      },
+      {
+        name: 'Add Products',
+        path: menus.ADD_PRODUCTS,
+      },
+    ],
+  },
+  {
+    name: 'Clients',
+    subMenu: [
+      {
+        name: 'List Clients',
+        path: menus.CLIENTS,
+      },
+      {
+        name: 'Add Clients',
+        path: menus.ADD_CLIENTS,
+      },
+    ],
+  },
+
+  {
+    name: 'Brands',
+    subMenu: [
+      {
+        name: 'List Brands',
+        path: menus.BRANDS,
+      },
+      {
+        name: 'Add Brands',
+        path: menus.ADD_BRANDS,
+      },
+    ],
+  },
+
+  {
+    name: 'Orders',
+    subMenu: [
+      {
+        name: 'List Orders',
+        path: menus.ORDERS,
+      },
+      {
+        name: 'Add Orders',
+        path: menus.ADD_ORDERS,
+      },
+    ],
+  },
+];
 
 export default function SidebarWithHeader({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,19 +121,6 @@ export default function SidebarWithHeader({ children }) {
 }
 
 const SidebarContent = ({ onClose, ...rest }) => {
-  const { apiData, loading, error } = useFetch({
-    method: 'GET',
-    url: '/menus',
-  });
-
-  if (loading) {
-    return <Skeleton />;
-  }
-
-  if (error) {
-    return error.message;
-  }
-
   return (
     <Box
       transition='3s ease'
@@ -87,45 +138,93 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </Text>
         <CloseButton display={{ base: 'flex', lg: 'none' }} onClick={onClose} />
       </Flex>
-      {apiData.map((link) => (
-        <NavItem key={link.id} icon={link.icon} to={link.path}>
-          {link.name}
-        </NavItem>
-      ))}
+      <Accordion>
+        {menuItems.map((link) => (
+          <NavItem
+            key={link.name}
+            to={link.path}
+            title={link.name}
+            isSub={link?.subMenu}
+          >
+            {link.subMenu
+              ? link.subMenu.map((sub) => {
+                  return (
+                    <AccordionPanel
+                      key={sub.name}
+                      pb={2}
+                      borderBottom={2}
+                      borderWidth={2}
+                    >
+                      <RouterLink
+                        to={sub.path}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {sub.name}
+                      </RouterLink>
+                    </AccordionPanel>
+                  );
+                })
+              : ''}
+          </NavItem>
+        ))}
+      </Accordion>
     </Box>
   );
 };
 
-const NavItem = ({ icon, children, to, ...rest }) => {
-  return (
+const NavItem = ({ title, children, to, isSub, ...rest }) => {
+  return isSub ? (
+    <AccordionItem pb={1} pt={1}>
+      <AccordionButton _expanded={{ bg: 'purple.500', color: 'white' }}>
+        <Text fontSize='lg' fontWeight='semibold'>
+          {title}
+        </Text>
+        <AccordionIcon />
+      </AccordionButton>
+      {children}
+    </AccordionItem>
+  ) : (
     <RouterLink to={to} style={{ textDecoration: 'none' }}>
-      <Flex
-        align='center'
-        p='4'
-        mx='4'
-        borderRadius='lg'
-        role='group'
-        cursor='pointer'
-        _hover={{
-          bg: 'primary.500',
-          color: 'white',
-        }}
-        {...rest}
+      <Text
+        fontSize='lg'
+        fontWeight='semibold'
+        pb={3}
+        pt={3}
+        pl={4}
+        _hover={{ bg: 'purple.500', color: 'white' }}
       >
-        {icon && (
-          <Icon
-            mr='4'
-            fontSize='16'
-            _groupHover={{
-              color: 'white',
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
+        {title}
+      </Text>
     </RouterLink>
   );
+
+  // <RouterLink to={to} style={{ textDecoration: 'none' }}>
+  //   <Flex
+  //     align='center'
+  //     p='4'
+  //     mx='4'
+  //     borderRadius='lg'
+  //     role='group'
+  //     cursor='pointer'
+  //     _hover={{
+  //       bg: 'primary.500',
+  //       color: 'white',
+  //     }}
+  //     {...rest}
+  //   >
+  //     {icon && (
+  //       <Icon
+  //         mr='4'
+  //         fontSize='16'
+  //         _groupHover={{
+  //           color: 'white',
+  //         }}
+  //         as={icon}
+  //       />
+  //     )}
+  //     {children}
+  //   </Flex>
+  // </RouterLink>
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {

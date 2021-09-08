@@ -5,10 +5,7 @@ import { GET_RECENT_ORDERS } from '../../settings/constant';
 import Skeletn from '../../components/skeleton';
 
 const ProductTable = () => {
-  const { apiData, loading, error } = useFetch({
-    method: 'GET',
-    url: GET_RECENT_ORDERS,
-  });
+  const { apiData, loading, error } = useFetch(GET_RECENT_ORDERS);
 
   if (loading) {
     return <Skeletn />;

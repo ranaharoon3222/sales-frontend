@@ -11,6 +11,7 @@ const useCreate = () => {
     reset,
     path: CLIENTS,
     files: { image, cnic_image },
+    addResources: true,
   });
 
   const { loading, success, successResponse, errorResponse, error } =

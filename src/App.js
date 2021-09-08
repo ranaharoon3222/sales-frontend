@@ -10,6 +10,11 @@ import {
   UPDATE_PRODUCTS,
   UPDATE_CLIENTS,
   ADD_CLIENTS,
+  BRANDS,
+  ADD_BRANDS,
+  UPDATE_BRANDS,
+  ADD_ORDERS,
+  UPDATE_ORDERS,
 } from './settings/constant';
 import Products from './pages/Products';
 import AddProducts from './pages/Products/add/add';
@@ -17,10 +22,13 @@ import UpdateProducts from './pages/Products/update/update';
 import Clients from './pages/Clients';
 import AddClients from './pages/Clients/add/add';
 import UpdateClients from './pages/Clients/update/update';
+import Brands from './pages/Brands';
+import AddBrands from './pages/Brands/add/add';
+import UpdateBrands from './pages/Brands/update/update';
 import Orders from './pages/Orders';
-import axios from 'axios';
+import AddOrders from './pages/Orders/add/add';
+import { SWRConfig } from 'swr';
 
-axios.defaults.baseURL = 'http://localhost:1337';
 
 const MyApp = () => {
   const allRoutes = [
@@ -55,6 +63,12 @@ const MyApp = () => {
       exact: true,
     },
     {
+      path: ADD_ORDERS,
+      compnent: <AddOrders />,
+      exact: true,
+    },
+
+    {
       path: ADD_PRODUCTS,
       compnent: <AddProducts />,
       exact: true,
@@ -64,26 +78,54 @@ const MyApp = () => {
       compnent: <UpdateProducts />,
       exact: false,
     },
+
+    {
+      path: BRANDS,
+      compnent: <Brands />,
+      exact: true,
+    },
+    {
+      path: ADD_BRANDS,
+      compnent: <AddBrands />,
+      exact: true,
+    },
+    {
+      path: UPDATE_BRANDS,
+      compnent: <UpdateBrands />,
+      exact: false,
+    },
   ];
 
   return (
     <HashRouter>
       <div>
-        <Layout>
-          <Switch>
-            {allRoutes.map((route, i) => {
-              return (
-                <Route
-                  path={route.path}
-                  exact={route.exact}
-                  key={i + route.path}
-                >
-                  {route.compnent}
-                </Route>
-              );
-            })}
-          </Switch>
-        </Layout>
+        <SWRConfig
+          value={{
+            fetcher: (resource, init) =>
+              fetch(resource, init).then((res) => {
+                if (res.status === 400) {
+                  throw new Error('400 error Occurs');
+                }
+                return res.json();
+              }),
+          }}
+        >
+          <Layout>
+            <Switch>
+              {allRoutes.map((route, i) => {
+                return (
+                  <Route
+                    path={route.path}
+                    exact={route.exact}
+                    key={i + route.path}
+                  >
+                    {route.compnent}
+                  </Route>
+                );
+              })}
+            </Switch>
+          </Layout>
+        </SWRConfig>
       </div>
     </HashRouter>
   );

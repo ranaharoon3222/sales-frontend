@@ -13,7 +13,7 @@ import Skeletn from '../../components/skeleton';
 import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
-import { CLIENTS, PAGINATION_LIMIT } from '../../settings/constant';
+import { BRANDS, PAGINATION_LIMIT } from '../../settings/constant';
 import { useHistory } from 'react-router-dom';
 
 const Products = () => {
@@ -22,77 +22,45 @@ const Products = () => {
 
   const query = qs.stringify({
     _where: {
-      _or: [
-        { Name_contains: value },
-        { mobile_no_contains: value },
-        { cnic_contains: value },
-        { occupation_contains: value },
-      ],
+      _or: [{ name_contains: value }],
     },
   });
-  const { apiData, loading, error, Paginations } = usePagination({
-    path: CLIENTS,
+  const { apiData, loading, error, Paginations, isValidating } = usePagination({
+    path: BRANDS,
     filters: `&${query}`,
     limit: PAGINATION_LIMIT,
   });
 
-  if (loading) {
+  if (loading && isValidating) {
     return <Skeletn />;
   }
   if (error) {
-    return error.message;
+    return <h1> {error.message} </h1>;
   }
 
   const TableColumns = [
     {
-      name: 'Name',
+      name: 'name',
       number: false,
     },
 
     {
-      name: 'occupation',
+      name: 'description',
       number: false,
-    },
-    {
-      name: 'Age',
-      number: true,
-    },
-
-    {
-      name: 'Mobile No',
-      number: true,
-    },
-    {
-      name: 'CNIC',
-      number: true,
-    },
-    {
-      name: 'Reffrences',
-      number: true,
-    },
-    {
-      name: 'Orders',
-      number: true,
     },
   ];
 
   const columns = apiData.map((item, index) => {
-    const { Name, occupation, age, mobile_no, cnic, refrences, orders, id } =
-      item;
+    const { name, id, description } = item;
 
     const pushToSinglePage = () => {
-      history.push(`${CLIENTS}/${id}`);
+      history.push(`${BRANDS}/${id}`);
     };
 
     return (
       <Tr key={index} onClick={pushToSinglePage} cursor='pointer'>
-        <Td> {Name} </Td>
-        <Td> {occupation} </Td>
-        <Td isNumeric> {age} </Td>
-        <Td isNumeric> {mobile_no} </Td>
-        <Td isNumeric> {cnic} </Td>
-        <Td isNumeric> {refrences.length} </Td>
-        <Td isNumeric> {orders.length} </Td>
+        <Td> {name} </Td>
+        <Td> {description} </Td>
       </Tr>
     );
   });

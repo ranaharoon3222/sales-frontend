@@ -1,5 +1,6 @@
 import React from 'react';
 import AsyncSelect from 'react-select/async';
+import { FormControl, FormLabel } from '@chakra-ui/react';
 
 const Index = (path, label = 'name') => {
   const loadOptions = async (inputValue) => {
@@ -22,13 +23,16 @@ const Index = (path, label = 'name') => {
 
   const SelectComponent = React.forwardRef((fields, ref) => {
     return (
-      <AsyncSelect
-        {...fields}
-        cacheOptions
-        loadOptions={loadOptions}
-        defaultOptions
-        ref={ref}
-      />
+      <FormControl style={{ marginBottom: '10px' }}>
+        <FormLabel> Select Resource </FormLabel>
+        <AsyncSelect
+          {...fields}
+          cacheOptions
+          loadOptions={loadOptions}
+          defaultOptions
+          ref={ref}
+        />
+      </FormControl>
     );
   });
 

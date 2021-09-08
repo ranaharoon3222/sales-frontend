@@ -14,7 +14,7 @@ import Skeletn from '../../components/skeleton';
 import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
-import PaginationToolBar from '../../components/PgainationToolBar';
+import { PAGINATION_LIMIT, ORDERS } from '../../settings/constant';
 
 const Products = () => {
   const [value, setValue] = useState('');
@@ -25,16 +25,14 @@ const Products = () => {
         { name_contains: value },
         { contact_no_contains: value },
         { address_contains: value },
-        { 'client.Name_contains': value },
         { id_eq: value },
-        // { invoice_date: value },
       ],
     },
   });
-  const { handlePageChange, apiData, loading, error } = usePagination({
-    path: '/orders',
+  const { apiData, loading, error, Paginations } = usePagination({
+    path: ORDERS,
     filters: `&${query}`,
-    limit: 25,
+    limit: PAGINATION_LIMIT,
   });
 
   if (loading) {
@@ -120,8 +118,11 @@ const Products = () => {
           })}
         </Td>
         <Td> {contact_no} </Td>
-        <Td> {address} </Td>
-        <Td isNumeric> {invoice_date} </Td>
+        <Td whiteSpace='nowrap'>{address}</Td>
+        <Td isNumeric whiteSpace='nowrap'>
+          {' '}
+          {invoice_date}{' '}
+        </Td>
         <Td isNumeric> {shipping} </Td>
         <Td isNumeric> {top_level_discount} </Td>
         <Td isNumeric> {total_price} </Td>
@@ -137,12 +138,7 @@ const Products = () => {
       <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
         <Filters setValue={setValue} />
         <Table variant='simple'>
-          <TableCaption>
-            <PaginationToolBar
-              handlePageChange={handlePageChange}
-              data={apiData.length}
-            />
-          </TableCaption>
+          <TableCaption>{Paginations()}</TableCaption>
           <Thead>
             <Tr>
               {TableColumns.map((item, index) => {

@@ -1,16 +1,16 @@
 import { useFields } from './useFields';
 import { useSubmit } from '../../../helpers/useSubmit';
-import { CLIENTS } from '../../../settings/constant';
+import { BRANDS } from '../../../settings/constant';
 
 const useCreate = () => {
   const { useFieldOptions } = useFields();
 
-  const { id, image, cnic_image } = useFieldOptions;
+  const { reset } = useFieldOptions;
+
   const { submitValues, onSubmit } = useSubmit({
-    path: `${CLIENTS}/${id}`,
-    method: 'PUT',
-    message: 'Client Updated Succssfully',
-    files: { image, cnic_image },
+    reset,
+    path: BRANDS,
+    addResources: true,
   });
 
   const { loading, success, successResponse, errorResponse, error } =

@@ -25,10 +25,8 @@ export const useFields = () => {
     apiData,
     loading,
     error: apiError,
-  } = useFetch({
-    method: 'GET',
-    url: `${CLIENTS}/${id}`,
-  });
+    mutate,
+  } = useFetch(`${CLIENTS}/${id}`);
 
   const { SelectComponent } = useSelect('brands');
 
@@ -51,6 +49,7 @@ export const useFields = () => {
     id,
     image,
     cnic_image,
+    mutate,
   };
 
   return { useFieldOptions };

@@ -6,6 +6,7 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
+import Button from '../Button';
 
 const Index = ({ setValue }) => {
   const handleSubmit = (e) => {
@@ -21,6 +22,7 @@ const Index = ({ setValue }) => {
           <InputLeftElement pointerEvents='none' children={<RiSearchLine />} />
           <Input placeholder='Search in Products' name='search' />
         </InputGroup>
+        <Button onClick={() => setValue('')}>Clear Search</Button>
       </form>
     </SimpleGrid>
   );

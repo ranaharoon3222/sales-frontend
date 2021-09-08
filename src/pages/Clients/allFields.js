@@ -20,6 +20,18 @@ export const AllFields = ({ control, apiData, handleChange }) => {
 
   const productFields = [
     {
+      name: 'image',
+      type: 'file',
+      onChange: handleChange,
+      custom: true,
+    },
+    {
+      name: 'cnic_image',
+      type: 'file',
+      onChange: handleChange,
+      custom: true,
+    },
+    {
       name: 'cnic',
       defaultValue: checkData('cnic'),
     },
@@ -89,18 +101,6 @@ export const AllFields = ({ control, apiData, handleChange }) => {
       defaultValue: checkData('office_phone'),
     },
 
-    {
-      name: 'image',
-      type: 'file',
-      onChange: handleChange,
-      custom: true,
-    },
-    {
-      name: 'cnic_image',
-      type: 'file',
-      onChange: handleChange,
-      custom: true,
-    },
     {
       name: 'refrences',
       component: (

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios';
 
 export const useImageUpload = () => {
   const [image, setImage] = useState(undefined);
@@ -8,17 +7,22 @@ export const useImageUpload = () => {
   const handleChange = async (e) => {
     const Formdata = new FormData();
     Formdata.append('files', e.target.files[0]);
-    const file = await axios.request({
-      baseURL: 'http://localhost:1337',
-      url: '/upload',
-      method: 'POST',
-      data: Formdata,
-    });
-    console.log(file);
-    if (e.target.name === 'image') {
-      file.status === 200 && setImage(file.data?.[0].id);
-    } else if (e.target.name === 'cnic_image') {
-      file.status === 200 && setCnicImage(file.data?.[0].id);
+
+    try {
+      const file = await fetch('http://localhost:1337/upload', {
+        method: 'POST',
+
+        body: Formdata,
+      });
+      const data = await file.json();
+
+      if (e.target.name === 'image') {
+        file.status === 200 && setImage(data?.[0].id);
+      } else if (e.target.name === 'cnic_image') {
+        file.status === 200 && setCnicImage(data?.[0].id);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

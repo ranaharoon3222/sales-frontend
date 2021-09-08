@@ -13,9 +13,8 @@ import Skeletn from '../../components/skeleton';
 import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
-import PaginationToolBar from '../../components/PgainationToolBar';
 import { useHistory } from 'react-router-dom';
-import { PRODUCTS } from '../../settings/constant';
+import { PRODUCTS, PAGINATION_LIMIT } from '../../settings/constant';
 
 const Products = () => {
   const [value, setValue] = useState('');
@@ -30,10 +29,10 @@ const Products = () => {
       ],
     },
   });
-  const { handlePageChange, apiData, loading, error } = usePagination({
+  const { apiData, loading, error, Paginations } = usePagination({
     path: PRODUCTS,
     filters: `&${query}`,
-    limit: 25,
+    limit: PAGINATION_LIMIT,
   });
 
   if (loading) {
@@ -120,12 +119,7 @@ const Products = () => {
       <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
         <Filters setValue={setValue} />
         <Table variant='simple'>
-          <TableCaption>
-            <PaginationToolBar
-              handlePageChange={handlePageChange}
-              data={apiData.length}
-            />
-          </TableCaption>
+          <TableCaption>{Paginations()}</TableCaption>
           <Thead>
             <Tr>
               {TableColumns.map((item, index) => {

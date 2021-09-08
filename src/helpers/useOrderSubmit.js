@@ -3,7 +3,7 @@ import { useCleanObjects } from './useCleanObjects';
 import { useResponses } from './useResponses';
 import { useToasts } from './useToast';
 
-export const useSubmit = ({
+export const useOrderSubmit = ({
   setValues = false,
   values = false,
   reset = false,
@@ -29,27 +29,8 @@ export const useSubmit = ({
   });
 
   const newValues = (data) => {
-    let refrences = [];
-    const isRefrences = data?.refrences;
-    isRefrences?.forEach((item) => {
-      return refrences.push({ id: item.value });
-    });
-
-    const brand = data?.brand?.value;
-    const unit = data?.unit?.value;
-    const house_occupation = data?.house_occupation?.value;
-    const stateValues = values ? values : {};
-    const image = files.image ? { image: files.image } : {};
-    const cnic_image = files.cnic_image ? { cnic_image: files.cnic_image } : {};
     const updateValues = cleanObjects({
       ...data,
-      ...stateValues,
-      ...image,
-      ...cnic_image,
-      refrences,
-      house_occupation,
-      brand,
-      unit,
     });
     console.log(updateValues);
 
