@@ -10,7 +10,7 @@ export const useOrderSubmit = ({
   path,
   clearFields,
   method = 'POST',
-  message = 'Product Added Succesully',
+  message = 'Orderd SucssFully',
   errorMessage = 'Please Check Unique Values',
   mutate = false,
   files = false,
@@ -48,12 +48,12 @@ export const useOrderSubmit = ({
     });
   };
 
-  const errorCase = (error) => {
+  const errorCase = (error, meessage) => {
     setSuccess(false);
     setError(error.message);
     setLoading(false);
     toast({
-      title: errorMessage,
+      title: meessage ? meessage : errorMessage,
       status: 'error',
     });
   };
@@ -75,10 +75,12 @@ export const useOrderSubmit = ({
 
       const data = await res.json();
 
-      addResources &&
-        window.location.replace(`http://localhost:5000/#${path}/${data?.id}`);
-
-      successCase(res);
+      res.status === 200
+        ? successCase(res)
+        : errorCase(
+            { error: { message: res.statusText } },
+            'Stock Not Available'
+          );
     } catch (error) {
       errorCase(error);
     }

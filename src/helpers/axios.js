@@ -17,7 +17,7 @@ export const useFetch = (path, name) => {
     isValidating,
     mutate,
   } = useSwr(url, {
-    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+    onErrorRetry: (error, revalidate, { retryCount }) => {
       // Never retry on 404.
       if (error.status === 404) return;
 

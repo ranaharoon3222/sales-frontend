@@ -1,12 +1,31 @@
 import React from 'react';
-import { Input } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Switch,
+  FormHelperText,
+} from '@chakra-ui/react';
 
-const Index = () => {
-  return (
-    <div>
-      <Input placeholder='Basic usage' />
-    </div>
-  );
-};
+const CustomInput = React.forwardRef(
+  ({ label, type = 'text', error, ...rest }, ref) => {
+    return (
+      <FormControl
+        style={{ marginBottom: '10px' }}
+        display={type === 'switch' ? 'flex' : 'inherit'}
+        alignItems='center'
+        ref={ref}
+      >
+        <FormLabel>{label}</FormLabel>
+        {type === 'switch' ? (
+          <Switch {...rest} />
+        ) : (
+          <Input bg='white' placeholder={label} type={type} {...rest} />
+        )}
+        <FormHelperText> {error} </FormHelperText>
+      </FormControl>
+    );
+  }
+);
 
-export default Index;
+export default CustomInput;

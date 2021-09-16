@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from './containers/Layout';
 import Home from './pages/Home';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import {
   PRODUCTS,
   CLIENTS,
@@ -15,20 +15,27 @@ import {
   UPDATE_BRANDS,
   ADD_ORDERS,
   UPDATE_ORDERS,
+  REFRENCES,
+  ADD_REFRENCES,
+  REPORTS,
+  UPDATE_REFRENCES,
 } from './settings/constant';
 import Products from './pages/Products';
 import AddProducts from './pages/Products/add/add';
 import UpdateProducts from './pages/Products/update/update';
-import Clients from './pages/Clients';
-import AddClients from './pages/Clients/add/add';
-import UpdateClients from './pages/Clients/update/update';
-import Brands from './pages/Brands';
-import AddBrands from './pages/Brands/add/add';
-import UpdateBrands from './pages/Brands/update/update';
+import Clients from 'pages/Clients';
+import AddClients from 'pages/Clients/add';
+import UpdateClients from 'pages/Clients/update';
+import Brands from 'pages/Brands';
+import AddBrands from 'pages/Brands/add';
+import UpdateBrands from 'pages/Brands/update';
 import Orders from './pages/Orders';
 import AddOrders from './pages/Orders/add/add';
+import Refrences from 'pages/Refrence/';
+import UpdateRefrences from 'pages/Refrence/update';
+import AddRefrences from 'pages/Refrence/add';
+import Reports from 'pages/Reports';
 import { SWRConfig } from 'swr';
-
 
 const MyApp = () => {
   const allRoutes = [
@@ -94,10 +101,30 @@ const MyApp = () => {
       compnent: <UpdateBrands />,
       exact: false,
     },
+    {
+      path: REFRENCES,
+      compnent: <Refrences />,
+      exact: true,
+    },
+    {
+      path: ADD_REFRENCES,
+      compnent: <AddRefrences />,
+      exact: true,
+    },
+    {
+      path: UPDATE_REFRENCES,
+      compnent: <UpdateRefrences />,
+      exact: false,
+    },
+    {
+      path: REPORTS,
+      compnent: <Reports />,
+      exact: true,
+    },
   ];
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div>
         <SWRConfig
           value={{
@@ -127,7 +154,7 @@ const MyApp = () => {
           </Layout>
         </SWRConfig>
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

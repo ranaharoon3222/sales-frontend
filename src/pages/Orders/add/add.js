@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDisclosure, Button, Box, Text, SimpleGrid } from '@chakra-ui/react';
 import { OrderDrawer } from './useDrawer';
 import OrderInput from './OrderInput';
@@ -9,9 +9,16 @@ import Installments from './installments';
 import useInstallments from './useInstallment';
 import DynamicItems from './useDynamicItems';
 import ProductItems from './productItems';
+import { useReactToPrint } from 'react-to-print';
+import Invoice from 'components/invoice/';
 
 const AllFields = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const [orderValues, setOrderValues] = useState({
     name: '',
@@ -94,6 +101,10 @@ const AllFields = () => {
 
   return (
     <Box bg='white' shadow='base' p={5}>
+      <div style={{ display: 'none' }}>
+        <Invoice ref={componentRef} />
+      </div>
+      <button onClick={handlePrint}>Print this out!</button>
       {error && errorResponse()}
       {success && successResponse()}
       <SimpleGrid columns={2} spacingX={1} spacingY={1} cursor='pointer'>

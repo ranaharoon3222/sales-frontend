@@ -3,6 +3,7 @@ import { useFetch } from '../../helpers/axios';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
 import { GET_RECENT_ORDERS } from '../../settings/constant';
 import Skeletn from '../../components/skeleton';
+import { generateKey } from 'helpers/useUnique';
 
 const ProductTable = () => {
   const { apiData, loading, error } = useFetch(GET_RECENT_ORDERS);
@@ -28,7 +29,7 @@ const ProductTable = () => {
         ? totalPriceWithShipping - discount
         : totalPriceWithShipping;
       return (
-        <Tr key={index}>
+        <Tr key={generateKey(item.id)}>
           <Td> 100{item.id} </Td>
           <Td> {item.client?.Name ? item.client.Name : item.name} </Td>
           <Td> {order.quantity} </Td>

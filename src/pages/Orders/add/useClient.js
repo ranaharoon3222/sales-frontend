@@ -25,6 +25,7 @@ const useClient = (setOrderValues) => {
         };
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     apiData?.Name,
     apiData?.mobile_no,

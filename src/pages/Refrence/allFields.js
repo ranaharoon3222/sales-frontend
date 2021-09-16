@@ -24,7 +24,7 @@ export const useFields = ({ control, handleChange, apiData }) => {
       name: 'cnic',
     },
     {
-      name: 'Name',
+      name: 'name',
     },
     {
       name: 'guardian_name',

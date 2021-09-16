@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCleanObjects } from './useCleanObjects';
 import { useResponses } from './useResponses';
 import { useToasts } from './useToast';
+import { useHistory } from 'react-router-dom';
 
 export const useSubmit = ({
   setValues = false,
@@ -17,6 +18,8 @@ export const useSubmit = ({
   addResources = false,
 }) => {
   const { toast } = useToasts();
+
+  const history = useHistory();
 
   const [success, setSuccess] = useState(false);
 
@@ -46,7 +49,7 @@ export const useSubmit = ({
       ...stateValues,
       ...image,
       ...cnic_image,
-      refrences,
+      ...refrences,
       house_occupation,
       brand,
       unit,
@@ -59,8 +62,8 @@ export const useSubmit = ({
   const successCase = async (res) => {
     setSuccess(res.status === 200);
     setError(false);
-    reset && reset();
-    setValues && setValues(clearFields);
+    // reset && reset();
+    // setValues && setValues(clearFields);
     mutate && (await mutate());
     toast({
       title: message,
@@ -81,7 +84,7 @@ export const useSubmit = ({
     console.log(data, 'data');
 
     const updateValues = newValues(data);
-
+    console.log(updateValues);
     setLoading(true);
     try {
       const res = await fetch(`http://localhost:1337${path}`, {
@@ -94,10 +97,9 @@ export const useSubmit = ({
 
       const data = await res.json();
 
-      addResources &&
-        window.location.replace(`http://localhost:5000/#${path}/${data?.id}`);
+      addResources && res.ok && history.push(path);
 
-      successCase(res);
+      res.ok ? successCase(res) : errorCase('Something Went Wrong');
     } catch (error) {
       errorCase(error);
     }

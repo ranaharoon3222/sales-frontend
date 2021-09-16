@@ -8,7 +8,7 @@ import {
 import { RiSearchLine } from 'react-icons/ri';
 import Button from '../Button';
 
-const Index = ({ setValue }) => {
+const Index = ({ setValue, value }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const search = e.target.search;
@@ -20,7 +20,11 @@ const Index = ({ setValue }) => {
       <form onSubmit={handleSubmit}>
         <InputGroup>
           <InputLeftElement pointerEvents='none' children={<RiSearchLine />} />
-          <Input placeholder='Search in Products' name='search' />
+          <Input
+            placeholder='Search in Products'
+            name='search'
+            defaultValue={value}
+          />
         </InputGroup>
         <Button onClick={() => setValue('')}>Clear Search</Button>
       </form>

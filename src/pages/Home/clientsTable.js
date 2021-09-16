@@ -3,6 +3,7 @@ import { useFetch } from '../../helpers/axios';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
 import { GET_RECENT_CLIENTS } from '../../settings/constant';
 import Skeletn from '../../components/skeleton';
+import {generateKey} from '../../helpers/useUnique'
 
 const ProductTable = () => {
   const { apiData, loading, error } = useFetch(GET_RECENT_CLIENTS);
@@ -16,7 +17,7 @@ const ProductTable = () => {
 
   const columns = apiData.map((item, index) => {
     return (
-      <Tr key={index}>
+      <Tr key={generateKey(item.id)}>
         <Td> {item.Name} </Td>
         <Td> {item.occupation} </Td>
         <Td isNumeric> {item.monthly_income} </Td>

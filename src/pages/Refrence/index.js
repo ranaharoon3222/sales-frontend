@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Table,
@@ -9,11 +9,11 @@ import {
   Td,
   TableCaption,
 } from '@chakra-ui/react';
-import Skeletn from 'components/skeleton';
-import { usePagination } from 'helpers/usePagination';
-import Filters from 'components/filters';
+import Skeletn from '../../components/skeleton';
+import { usePagination } from '../../helpers/usePagination';
+import Filters from '../../components/filters';
 import qs from 'qs';
-import { BRANDS, PAGINATION_LIMIT } from 'settings/constant';
+import { REFRENCES, PAGINATION_LIMIT } from '../../settings/constant';
 import { useHistory } from 'react-router-dom';
 import { useDelete } from 'helpers/useSingleDelete';
 import { IoTrashOutline } from 'react-icons/io5';
@@ -24,12 +24,15 @@ const Products = () => {
 
   const query = qs.stringify({
     _where: {
-      _or: [{ name_contains: value }],
+      _or: [
+        { name_contains: value },
+        { mobile_no_contains: value },
+        { cnic_contains: value },
+      ],
     },
   });
-
   const { apiData, loading, error, Paginations, mutate } = usePagination({
-    path: BRANDS,
+    path: REFRENCES,
     filters: `&${query}`,
     limit: PAGINATION_LIMIT,
   });
@@ -49,21 +52,34 @@ const Products = () => {
       number: false,
     },
     {
-      name: 'name',
+      name: 'Name',
       number: false,
     },
 
     {
-      name: 'description',
+      name: 'occupation',
       number: false,
+    },
+    {
+      name: 'Age',
+      number: true,
+    },
+
+    {
+      name: 'Mobile No',
+      number: true,
+    },
+    {
+      name: 'CNIC',
+      number: true,
     },
   ];
 
   const columns = apiData.map((item, index) => {
-    const { name, id, description } = item;
+    const { name, occupation, age, mobile_no, cnic, id } = item;
 
     const pushToSinglePage = () => {
-      history.push(`${BRANDS}/${id}`);
+      history.push(`${REFRENCES}/${id}`);
     };
 
     return (
@@ -72,7 +88,7 @@ const Products = () => {
           width='70px'
           onClick={() =>
             handleDelete({
-              path: `${BRANDS}/${id}`,
+              path: `${REFRENCES}/${id}`,
               title: `${item.name} Deleted Successfully`,
               mutate,
             })
@@ -81,7 +97,10 @@ const Products = () => {
           <IoTrashOutline color='red' size='22px' />
         </Td>
         <Td onClick={pushToSinglePage}> {name} </Td>
-        <Td> {description} </Td>
+        <Td> {occupation} </Td>
+        <Td isNumeric> {age} </Td>
+        <Td isNumeric> {mobile_no} </Td>
+        <Td isNumeric> {cnic} </Td>
       </Tr>
     );
   });

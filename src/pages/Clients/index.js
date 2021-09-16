@@ -9,12 +9,14 @@ import {
   Td,
   TableCaption,
 } from '@chakra-ui/react';
-import Skeletn from '../../components/skeleton';
-import { usePagination } from '../../helpers/usePagination';
-import Filters from '../../components/filters';
+import Skeletn from 'components/skeleton';
+import { usePagination } from 'helpers/usePagination';
+import Filters from 'components/filters';
 import qs from 'qs';
-import { CLIENTS, PAGINATION_LIMIT } from '../../settings/constant';
+import { CLIENTS, PAGINATION_LIMIT } from 'settings/constant';
 import { useHistory } from 'react-router-dom';
+import { useDelete } from 'helpers/useSingleDelete';
+import { IoTrashOutline } from 'react-icons/io5';
 
 const Products = () => {
   const history = useHistory();
@@ -26,15 +28,16 @@ const Products = () => {
         { Name_contains: value },
         { mobile_no_contains: value },
         { cnic_contains: value },
-        { occupation_contains: value },
       ],
     },
   });
-  const { apiData, loading, error, Paginations } = usePagination({
+  const { apiData, loading, error, Paginations, mutate } = usePagination({
     path: CLIENTS,
     filters: `&${query}`,
     limit: PAGINATION_LIMIT,
   });
+
+  const { handleDelete } = useDelete();
 
   if (loading) {
     return <Skeletn />;
@@ -44,6 +47,10 @@ const Products = () => {
   }
 
   const TableColumns = [
+    {
+      name: 'Del',
+      number: false,
+    },
     {
       name: 'Name',
       number: false,
@@ -66,33 +73,34 @@ const Products = () => {
       name: 'CNIC',
       number: true,
     },
-    {
-      name: 'Reffrences',
-      number: true,
-    },
-    {
-      name: 'Orders',
-      number: true,
-    },
   ];
 
   const columns = apiData.map((item, index) => {
-    const { Name, occupation, age, mobile_no, cnic, refrences, orders, id } =
-      item;
+    const { Name, occupation, age, mobile_no, cnic, id } = item;
 
     const pushToSinglePage = () => {
       history.push(`${CLIENTS}/${id}`);
     };
 
     return (
-      <Tr key={index} onClick={pushToSinglePage} cursor='pointer'>
-        <Td> {Name} </Td>
+      <Tr key={item.id} cursor='pointer'>
+        <Td
+          width='70px'
+          onClick={() =>
+            handleDelete({
+              path: `${CLIENTS}/${id}`,
+              title: `${item.Name} Deleted Successfully`,
+              mutate,
+            })
+          }
+        >
+          <IoTrashOutline color='red' size='22px' />
+        </Td>
+        <Td onClick={pushToSinglePage}> {Name} </Td>
         <Td> {occupation} </Td>
         <Td isNumeric> {age} </Td>
         <Td isNumeric> {mobile_no} </Td>
         <Td isNumeric> {cnic} </Td>
-        <Td isNumeric> {refrences.length} </Td>
-        <Td isNumeric> {orders.length} </Td>
       </Tr>
     );
   });
@@ -100,7 +108,7 @@ const Products = () => {
   return (
     <>
       <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
-        <Filters setValue={setValue} />
+        <Filters setValue={setValue} value={value} />
         <Table variant='simple'>
           <TableCaption>{Paginations()}</TableCaption>
           <Thead>

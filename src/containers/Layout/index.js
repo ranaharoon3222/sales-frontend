@@ -34,6 +34,10 @@ const menuItems = [
     path: '/',
   },
   {
+    name: 'Reports',
+    path: menus.REPORTS,
+  },
+  {
     name: 'Products',
     subMenu: [
       {
@@ -56,6 +60,19 @@ const menuItems = [
       {
         name: 'Add Clients',
         path: menus.ADD_CLIENTS,
+      },
+    ],
+  },
+  {
+    name: 'Refrences',
+    subMenu: [
+      {
+        name: 'List Refrences',
+        path: menus.REFRENCES,
+      },
+      {
+        name: 'Add Refrences',
+        path: menus.ADD_REFRENCES,
       },
     ],
   },
@@ -132,9 +149,9 @@ const SidebarContent = ({ onClose, ...rest }) => {
       h='full'
       {...rest}
     >
-      <Flex h='20' alignItems='center' mx='8' justifyContent='space-between'>
+      <Flex h='24' alignItems='center' mx='8' justifyContent='space-between'>
         <Text fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
-          Logo
+          <img src='/cw.png' width='100px' alt='' />
         </Text>
         <CloseButton display={{ base: 'flex', lg: 'none' }} onClick={onClose} />
       </Flex>
