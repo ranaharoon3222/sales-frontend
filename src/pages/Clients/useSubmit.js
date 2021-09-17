@@ -45,8 +45,14 @@ export const useSubmit = ({
 
   const newValues = (data) => {
     const house_occupation = data?.house_occupation?.value;
+    let refrences = [];
+    data?.refrences?.forEach((item) => {
+      refrences.push({ id: item.value });
+    });
+
     const updateValues = cleanObjects({
       ...data,
+      refrences: refrences,
       image,
       cnic_image,
       house_occupation,

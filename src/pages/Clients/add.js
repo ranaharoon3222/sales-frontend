@@ -81,7 +81,7 @@ const AddClient = ({ redirect = true }) => {
           <Button type='submit' loadingText='Submitting...' isLoading={loading}>
             Submit Now
           </Button>
-          <Button type='submit' colorScheme='green' ml={4} onClick={onOpen}>
+          <Button colorScheme='green' ml={4} onClick={onOpen}>
             Add Refreence
           </Button>
         </form>

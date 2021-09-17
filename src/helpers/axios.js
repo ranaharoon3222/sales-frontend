@@ -25,7 +25,7 @@ export const useFetch = (path, name) => {
       if (retryCount >= 10) return;
 
       // Retry after 5 seconds.
-      setTimeout(() => revalidate({ retryCount }), 5000);
+      // setTimeout(() => revalidate({ retryCount }), 5000);
     },
     onError: () => toast({ title: 'Error While Fetching', status: 'error' }),
   });

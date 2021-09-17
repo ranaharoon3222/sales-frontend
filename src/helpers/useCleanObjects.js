@@ -5,6 +5,7 @@ export const useCleanObjects = () => {
         obj[propName] === '' ||
         obj[propName] === undefined ||
         obj[propName] === null ||
+        obj[propName].length === 0 ||
         (removeZero && obj[propName] === 0)
       ) {
         delete obj[propName];

@@ -1,5 +1,6 @@
 import Select from 'components/select/simpleSelect';
 import { Controller } from 'react-hook-form';
+import RefrenceSelect from 'pages/Clients/refrenceSelect';
 
 const options = [
   { value: 'rent', label: 'rent' },
@@ -7,6 +8,14 @@ const options = [
 ];
 
 export const useFields = ({ control, handleChange, apiData }) => {
+  let refrences = [];
+  apiData?.refrences?.forEach((item) => {
+    refrences.push({
+      label: `${item.name} - ${item.guardian_name}`,
+      value: item.id,
+    });
+  });
+
   const allFields = [
     {
       name: 'image',
@@ -72,8 +81,27 @@ export const useFields = ({ control, handleChange, apiData }) => {
       custom: true,
     },
     {
+      name: 'refrences',
+      component: (
+        <Controller
+          name='refrences'
+          control={control}
+          render={({ field }) => (
+            <RefrenceSelect
+              defaultValue={refrences}
+              path='refrences'
+              isMulti
+              {...field}
+            />
+          )}
+        />
+      ),
+      custom: true,
+    },
+    {
       name: 'mobile_no',
     },
+
     {
       name: 'office_phone',
     },
