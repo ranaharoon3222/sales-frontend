@@ -1,13 +1,9 @@
-import { useState } from 'react';
-import { useCleanObjects } from 'helpers/useCleanObjects';
-import { useResponses } from 'helpers/useResponses';
-import { useToasts } from 'helpers/useToast';
-import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from 'pages/Clients/schema';
 import { useImageUpload } from 'pages/Clients/useImageUpload';
 import { useStoreActions } from 'easy-peasy';
+import { SubmitObject } from 'helpers/useSubmitValues';
 
 export const useSubmit = ({
   path,
@@ -30,18 +26,20 @@ export const useSubmit = ({
     resolver: yupResolver(schema),
   });
 
-  const { handleChange, cnic_image, image } = useImageUpload();
-
-  const { toast } = useToasts();
-  const history = useHistory();
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const { cleanObjects } = useCleanObjects();
-  const { successResponse, errorResponse } = useResponses({
+  const {
+    history,
+    success,
+    loading,
+    cleanObjects,
+    successResponse,
+    errorResponse,
+    errorCase,
+    successCase,
     error,
-    successLabel: message,
-  });
+    setLoading,
+  } = SubmitObject({ mutate, errorMessage, successMessage: message });
+
+  const { handleChange, cnic_image, image } = useImageUpload();
 
   const newValues = (data) => {
     const house_occupation = data?.house_occupation?.value;
@@ -60,26 +58,6 @@ export const useSubmit = ({
     console.log(updateValues);
 
     return updateValues;
-  };
-
-  const successCase = async () => {
-    setLoading(false);
-    setSuccess(true);
-    setError(false);
-    mutate && (await mutate());
-    toast({
-      title: message,
-    });
-  };
-
-  const errorCase = (error) => {
-    setSuccess(false);
-    setError(error.message);
-    setLoading(false);
-    toast({
-      title: errorMessage,
-      status: 'error',
-    });
   };
 
   const onSubmit = (data) => {

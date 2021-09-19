@@ -14,15 +14,15 @@ import {
   ADD_BRANDS,
   UPDATE_BRANDS,
   ADD_ORDERS,
-  UPDATE_ORDERS,
   REFRENCES,
   ADD_REFRENCES,
   REPORTS,
   UPDATE_REFRENCES,
+  UPDATE_ORDERS,
 } from './settings/constant';
-import Products from './pages/Products';
-import AddProducts from './pages/Products/add/add';
-import UpdateProducts from './pages/Products/update/update';
+import Products from 'pages/Products';
+import AddProducts from 'pages/Products/add';
+import UpdateProducts from 'pages/Products/update';
 import Clients from 'pages/Clients';
 import AddClients from 'pages/Clients/add';
 import UpdateClients from 'pages/Clients/update';

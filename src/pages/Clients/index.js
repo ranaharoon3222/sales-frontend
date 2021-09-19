@@ -75,7 +75,7 @@ const Products = () => {
     },
   ];
 
-  const columns = apiData.map((item, index) => {
+  const columns = apiData.map((item) => {
     const { Name, occupation, age, mobile_no, cnic, id } = item;
 
     const pushToSinglePage = () => {

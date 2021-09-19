@@ -1,17 +1,27 @@
-import React from 'react';
-import { SimpleGrid, Box, Text, useDisclosure } from '@chakra-ui/react';
+import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import CustomInput from 'components/input';
-import { useSubmit } from 'pages/Clients/useSubmit';
-import { CLIENTS } from 'settings/constant';
-import { useFields } from 'pages/Clients/allFields';
+import { useSubmit } from 'pages/Products/useSubmit';
+import { PRODUCTS } from 'settings/constant';
+import { useParams } from 'react-router-dom';
+import { useFetch } from 'helpers/axios';
+import Skeleton from 'components/skeleton';
+import { useFields } from 'pages/Products/allFields';
 import Button from 'components/Button';
-import AddRefrence from 'pages/Refrence/add';
-import UseDrawer from 'components/Drawer';
 
-const AddClient = ({ redirect = true }) => {
+const UpdateClient = () => {
+  let { id } = useParams();
+  const {
+    apiData,
+    loading: apiLoading,
+    error: apiError,
+    mutate,
+  } = useFetch(`${PRODUCTS}/${id}`);
+
   const { submitValues, onSubmit } = useSubmit({
-    path: CLIENTS,
-    redirect,
+    path: `${PRODUCTS}/${id}`,
+    method: 'PUT',
+    mutate,
+    id,
   });
   const {
     loading,
@@ -26,22 +36,23 @@ const AddClient = ({ redirect = true }) => {
     errors,
   } = submitValues;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { allFields } = useFields({ handleChange, control, apiData });
 
-  const { allFields } = useFields({ handleChange, control });
+  if (apiLoading) {
+    return <Skeleton />;
+  }
+
+  if (apiError) {
+    return apiError.message;
+  }
 
   return (
     <div>
       {error && errorResponse()}
       {success && successResponse()}
-
-      <UseDrawer isOpen={isOpen} onClose={onClose}>
-        <AddRefrence redirect={false} />
-      </UseDrawer>
-
       <Box boxShadow='md' bg='white' p={5}>
         <Text fontSize='3xl' mb={5}>
-          Add Client
+          Update Product
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
           <SimpleGrid columns={2} spacingX={5} spacingY={3}>
@@ -69,7 +80,7 @@ const AddClient = ({ redirect = true }) => {
                       {...register(input.name)}
                       placeholder={input.name.toUpperCase()}
                       type={input.type ? input.type : 'text'}
-                      defaultValue={input.type !== 'number' ? '' : 0}
+                      defaultValue={apiData[input.name]}
                       disabled={input.disabled}
                       error={errors[input.name]?.message}
                     />
@@ -82,13 +93,10 @@ const AddClient = ({ redirect = true }) => {
           <Button type='submit' loadingText='Submitting...' isLoading={loading}>
             Submit Now
           </Button>
-          <Button colorScheme='green' ml={4} onClick={onOpen}>
-            Add Refreence
-          </Button>
         </form>
       </Box>
     </div>
   );
 };
 
-export default AddClient;
+export default UpdateClient;

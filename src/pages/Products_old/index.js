@@ -9,31 +9,31 @@ import {
   Td,
   TableCaption,
 } from '@chakra-ui/react';
-import Skeletn from 'components/skeleton';
-import { usePagination } from 'helpers/usePagination';
-import Filters from 'components/filters';
+import Skeletn from '../../components/skeleton';
+import { usePagination } from '../../helpers/usePagination';
+import Filters from '../../components/filters';
 import qs from 'qs';
-import { PRODUCTS, PAGINATION_LIMIT } from 'settings/constant';
 import { useHistory } from 'react-router-dom';
-import { useDelete } from 'helpers/useSingleDelete';
-import { IoTrashOutline } from 'react-icons/io5';
+import { PRODUCTS, PAGINATION_LIMIT } from '../../settings/constant';
 
 const Products = () => {
-  const history = useHistory();
   const [value, setValue] = useState('');
+  const history = useHistory();
 
   const query = qs.stringify({
     _where: {
-      _or: [{ item_code_contains: value }, { product_name_contains: value }],
+      _or: [
+        { product_name_contains: value },
+        { item_code_contains: value },
+        { model_no_contains: value },
+      ],
     },
   });
-  const { apiData, loading, error, Paginations, mutate } = usePagination({
+  const { apiData, loading, error, Paginations } = usePagination({
     path: PRODUCTS,
     filters: `&${query}`,
     limit: PAGINATION_LIMIT,
   });
-
-  const { handleDelete } = useDelete();
 
   if (loading) {
     return <Skeletn />;
@@ -44,61 +44,72 @@ const Products = () => {
 
   const TableColumns = [
     {
-      name: 'Del',
+      name: 'Name',
       number: false,
     },
+
     {
-      name: 'item_code',
+      name: 'Item Code',
+      number: true,
+    },
+    {
+      name: 'Model No',
       number: true,
     },
 
     {
-      name: 'product_name',
-      number: false,
-    },
-    {
-      name: 'sale_price',
+      name: 'Purchase Price',
       number: true,
     },
-
     {
-      name: 'unit',
-      number: false,
+      name: 'Sale Price',
+      number: true,
     },
     {
-      name: 'stock',
+      name: 'Stock',
       number: true,
+    },
+    {
+      name: 'Opening Stock',
+      number: true,
+    },
+    {
+      name: 'Stock Value',
+      number: true,
+    },
+    {
+      name: 'Brand',
+      number: false,
     },
   ];
 
   const columns = apiData.map((item, index) => {
-    const { item_code, product_name, unit, stock, sale_price, id } = item;
-
     const pushToSinglePage = () => {
-      history.push(`${PRODUCTS}/${id}`);
+      history.push(`${PRODUCTS}/${item.id}`);
     };
 
+    const {
+      product_name,
+      item_code,
+      model_no,
+      sale_price,
+      purchase_price,
+      stock,
+      opening_stock,
+      stock_value,
+      brand,
+    } = item;
     return (
-      <Tr key={item.id} cursor='pointer'>
-        <Td
-          width='70px'
-          onClick={() =>
-            handleDelete({
-              path: `${PRODUCTS}/${id}`,
-              title: `${item.Name} Deleted Successfully`,
-              mutate,
-            })
-          }
-        >
-          <IoTrashOutline color='red' size='22px' />
-        </Td>
-        <Td onClick={pushToSinglePage} isNumeric>
-          {item_code}
-        </Td>
-        <Td> {product_name} </Td>
+      <Tr key={index} onClick={pushToSinglePage} cursor='pointer'>
+        <Td>{product_name}</Td>
+        <Td isNumeric> {item_code} </Td>
+        <Td isNumeric> {model_no} </Td>
+        <Td isNumeric> {purchase_price} </Td>
         <Td isNumeric> {sale_price} </Td>
-        <Td> {unit} </Td>
         <Td isNumeric> {stock} </Td>
+        <Td isNumeric> {opening_stock} </Td>
+        <Td isNumeric> {stock_value} </Td>
+        <Td> {brand?.name} </Td>
       </Tr>
     );
   });
@@ -106,7 +117,7 @@ const Products = () => {
   return (
     <>
       <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
-        <Filters setValue={setValue} value={value} />
+        <Filters setValue={setValue} />
         <Table variant='simple'>
           <TableCaption>{Paginations()}</TableCaption>
           <Thead>

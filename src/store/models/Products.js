@@ -1,23 +1,27 @@
 import { action, thunk } from 'easy-peasy';
 import axios from 'axios';
-import { REFRENCES } from 'settings/constant';
+import { PRODUCTS } from 'settings/constant';
 
-const Refrence = {
+const Products = {
   list: [],
+  formValues: {},
+  values: action((state, payload) => {
+    state.formValues = { ...state.formValues, ...payload };
+  }),
   add: action((state, payload) => {
     state.list.push(payload);
   }),
   save: thunk(async (actions, payload) => {
-    const { data } = await axios.post(REFRENCES, payload);
+    const { data } = await axios.post(PRODUCTS, payload);
     actions.add(data);
   }),
   update: thunk(async (actions, payload) => {
     const { data } = await axios.put(
-      `${REFRENCES}/${payload.id}`,
+      `${PRODUCTS}/${payload.id}`,
       payload.updateValues
     );
     actions.add(data);
   }),
 };
 
-export default Refrence;
+export default Products;
