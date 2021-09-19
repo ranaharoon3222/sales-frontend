@@ -71,7 +71,7 @@ const Products = () => {
     },
   ];
 
-  const columns = apiData.map((item, index) => {
+  const columns = apiData.map((item) => {
     const { item_code, product_name, unit, stock, sale_price, id } = item;
 
     const pushToSinglePage = () => {
@@ -85,7 +85,7 @@ const Products = () => {
           onClick={() =>
             handleDelete({
               path: `${PRODUCTS}/${id}`,
-              title: `${item.Name} Deleted Successfully`,
+              title: `${item.product_name} Deleted Successfully`,
               mutate,
             })
           }

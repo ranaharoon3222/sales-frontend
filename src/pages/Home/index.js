@@ -38,16 +38,6 @@ const Home = () => {
       <SimpleGrid columns={1} spacingX={5} spacingY={1} mt={5}>
         <OrderTable />
       </SimpleGrid>
-
-      <SimpleGrid columns={1} spacingX={5} spacingY={1} mt={5}>
-        <iframe
-          src={url}
-          frameBorder='0'
-          width='100%'
-          height='900'
-          title='Dahboard'
-        ></iframe>
-      </SimpleGrid>
     </>
   );
 };

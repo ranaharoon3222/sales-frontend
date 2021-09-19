@@ -1,32 +1,32 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from 'pages/Products/schema';
+import { schema } from 'pages/Refrence/schema';
+import { useImageUpload } from 'pages/Refrence/useImageUpload';
 import { useStoreActions } from 'easy-peasy';
 import { SubmitObject } from 'helpers/useSubmitValues';
 
 export const useSubmit = ({
   path,
   method = 'POST',
-  message = 'Product Added Succesully',
+  message = 'Refrence Added Succesully',
   errorMessage = 'Please Check Unique Values',
   mutate = false,
   redirect = false,
   id = false,
 }) => {
-  const saveProducts = useStoreActions((actions) => actions.Products.save);
-  const updateProducts = useStoreActions((actions) => actions.Products.update);
+  const saveRefrence = useStoreActions((actions) => actions.Refrences.save);
+  const updateRefrence = useStoreActions((actions) => actions.Refrences.update);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
-    setValue,
-    watch,
-    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const { handleChange, cnic_image, image } = useImageUpload();
 
   const {
     history,
@@ -39,19 +39,15 @@ export const useSubmit = ({
     successCase,
     error,
     setLoading,
-  } = SubmitObject({
-    mutate,
-    errorMessage,
-    successMessage: message,
-  });
+  } = SubmitObject({ mutate, errorMessage, successMessage: message });
 
   const newValues = (data) => {
-    const brandValue = data?.brand.value;
-    const unitValue = data?.unit.value;
+    const house_occupation = data?.house_occupation?.value;
     const updateValues = cleanObjects({
       ...data,
-      brand: brandValue,
-      unit: unitValue,
+      image,
+      cnic_image,
+      house_occupation,
     });
     console.log(updateValues);
 
@@ -63,14 +59,14 @@ export const useSubmit = ({
     const updateValues = newValues(data);
 
     if (method === 'POST') {
-      saveProducts(updateValues)
+      saveRefrence(updateValues)
         .then(() => {
           successCase();
           redirect && history.push(path);
         })
         .catch((err) => errorCase(err));
     } else {
-      updateProducts({ updateValues, id })
+      updateRefrence({ updateValues, id })
         .then(() => successCase())
         .catch((err) => errorCase(err));
     }
@@ -86,9 +82,7 @@ export const useSubmit = ({
     handleSubmit,
     errors,
     control,
-    setValue,
-    watch,
-    reset,
+    handleChange,
   };
 
   return { onSubmit, submitValues };

@@ -14,9 +14,13 @@ import Skeletn from '../../components/skeleton';
 import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
-import { PAGINATION_LIMIT, ORDERS } from '../../settings/constant';
+import { ORDERS, PAGINATION_LIMIT } from '../../settings/constant';
+import { useHistory } from 'react-router-dom';
+import { useDelete } from 'helpers/useSingleDelete';
+import { IoTrashOutline } from 'react-icons/io5';
 
 const Products = () => {
+  const history = useHistory();
   const [value, setValue] = useState('');
 
   const query = qs.stringify({
@@ -29,11 +33,13 @@ const Products = () => {
       ],
     },
   });
-  const { apiData, loading, error, Paginations } = usePagination({
+  const { apiData, loading, error, Paginations, mutate } = usePagination({
     path: ORDERS,
     filters: `&${query}`,
     limit: PAGINATION_LIMIT,
   });
+
+  const { handleDelete } = useDelete();
 
   if (loading) {
     return <Skeletn />;
@@ -43,6 +49,10 @@ const Products = () => {
   }
 
   const TableColumns = [
+    {
+      name: 'Del',
+      number: false,
+    },
     {
       name: '#Order',
       number: false,
@@ -105,10 +115,26 @@ const Products = () => {
       advance,
     } = item;
 
+    const pushToSinglePage = () => {
+      history.push(`${ORDERS}/${id}`);
+    };
+
     return (
-      <Tr key={index}>
+      <Tr key={index} cursor='pointer'>
+        <Td
+          width='70px'
+          onClick={() =>
+            handleDelete({
+              path: `${ORDERS}/${id}`,
+              title: `${item.name} Deleted Successfully`,
+              mutate,
+            })
+          }
+        >
+          <IoTrashOutline color='red' size='22px' />
+        </Td>
         <Td> 100{id} </Td>
-        <Td>
+        <Td whiteSpace='nowrap'>
           {order_comp.map((order, i) => {
             return (
               <Badge mr={3} key={i}>
@@ -120,8 +146,7 @@ const Products = () => {
         <Td> {contact_no} </Td>
         <Td whiteSpace='nowrap'>{address}</Td>
         <Td isNumeric whiteSpace='nowrap'>
-          {' '}
-          {invoice_date}{' '}
+          {invoice_date}
         </Td>
         <Td isNumeric> {shipping} </Td>
         <Td isNumeric> {top_level_discount} </Td>
@@ -136,7 +161,7 @@ const Products = () => {
   return (
     <>
       <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
-        <Filters setValue={setValue} />
+        <Filters setValue={setValue} value={value} />
         <Table variant='simple'>
           <TableCaption>{Paginations()}</TableCaption>
           <Thead>

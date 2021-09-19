@@ -18,7 +18,6 @@ import {
   ADD_REFRENCES,
   REPORTS,
   UPDATE_REFRENCES,
-  UPDATE_ORDERS,
 } from './settings/constant';
 import Products from 'pages/Products';
 import AddProducts from 'pages/Products/add';
@@ -29,8 +28,8 @@ import UpdateClients from 'pages/Clients/update';
 import Brands from 'pages/Brands';
 import AddBrands from 'pages/Brands/add';
 import UpdateBrands from 'pages/Brands/update';
-import Orders from './pages/Orders';
-import AddOrders from './pages/Orders/add/add';
+import Orders from 'pages/Orders';
+import AddOrders from 'pages/Orders/add';
 import Refrences from 'pages/Refrence/';
 import UpdateRefrences from 'pages/Refrence/update';
 import AddRefrences from 'pages/Refrence/add';

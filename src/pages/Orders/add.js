@@ -1,28 +1,14 @@
-import React from 'react';
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import CustomInput from 'components/input';
-import { useSubmit } from 'pages/Products/useSubmit';
-import { PRODUCTS } from 'settings/constant';
-import { useParams } from 'react-router-dom';
-import { useFetch } from 'helpers/axios';
-import Skeleton from 'components/skeleton';
-import { useFields } from 'pages/Products/allFields';
+import { useSubmit } from 'pages/Refrence/useSubmit';
+import { REFRENCES } from 'settings/constant';
+import { useFields } from 'pages/Refrence/allFields';
 import Button from 'components/Button';
 
-const UpdateClient = () => {
-  let { id } = useParams();
-  const {
-    apiData,
-    loading: apiLoading,
-    error: apiError,
-    mutate,
-  } = useFetch(`${PRODUCTS}/${id}`);
-
+const AddRefrence = ({ redirect = true }) => {
   const { submitValues, onSubmit } = useSubmit({
-    path: `${PRODUCTS}/${id}`,
-    method: 'PUT',
-    mutate,
-    id,
+    path: REFRENCES,
+    redirect,
   });
   const {
     loading,
@@ -30,23 +16,14 @@ const UpdateClient = () => {
     errorResponse,
     success,
     successResponse,
+    handleChange,
     handleSubmit,
     register,
+    control,
     errors,
   } = submitValues;
 
-  const { allFields } = useFields({
-    submitValues,
-    apiData,
-  });
-
-  if (apiLoading) {
-    return <Skeleton />;
-  }
-
-  if (apiError) {
-    return apiError.message;
-  }
+  const { allFields } = useFields({ handleChange, control });
 
   return (
     <div>
@@ -54,7 +31,7 @@ const UpdateClient = () => {
       {success && successResponse()}
       <Box boxShadow='md' bg='white' p={5}>
         <Text fontSize='3xl' mb={5}>
-          Update Product
+          Add Refrence
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
           <SimpleGrid columns={2} spacingX={5} spacingY={3}>
@@ -71,7 +48,7 @@ const UpdateClient = () => {
                       name={input.name}
                       placeholder={input.name.toUpperCase()}
                       type={input.type ? input.type : 'text'}
-                      value={input.value || ''}
+                      value={input.value}
                       onChange={input.onChange}
                       disabled={input.disabled}
                       error={errors[input.name]?.message}
@@ -82,7 +59,7 @@ const UpdateClient = () => {
                       {...register(input.name)}
                       placeholder={input.name.toUpperCase()}
                       type={input.type ? input.type : 'text'}
-                      defaultValue={apiData[input.name]}
+                      defaultValue={input.type !== 'number' ? '' : 0}
                       disabled={input.disabled}
                       error={errors[input.name]?.message}
                     />
@@ -101,4 +78,4 @@ const UpdateClient = () => {
   );
 };
 
-export default UpdateClient;
+export default AddRefrence;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import CustomInput from 'components/input';
 import { useSubmit } from 'pages/Products/useSubmit';
@@ -5,6 +6,7 @@ import { PRODUCTS } from 'settings/constant';
 import { useFields } from 'pages/Products/allFields';
 import Button from 'components/Button';
 
+// eslint-disable-next-line react/prop-types
 const AddClient = ({ redirect = true }) => {
   const { submitValues, onSubmit } = useSubmit({
     path: PRODUCTS,
@@ -16,14 +18,12 @@ const AddClient = ({ redirect = true }) => {
     errorResponse,
     success,
     successResponse,
-    handleChange,
     handleSubmit,
     register,
-    control,
     errors,
   } = submitValues;
 
-  const { allFields } = useFields({ handleChange, control });
+  const { allFields } = useFields({ submitValues });
 
   return (
     <div>
@@ -49,7 +49,7 @@ const AddClient = ({ redirect = true }) => {
                       name={input.name}
                       placeholder={input.name.toUpperCase()}
                       type={input.type ? input.type : 'text'}
-                      value={input.value}
+                      value={input.value || ''}
                       onChange={input.onChange}
                       disabled={input.disabled}
                       error={errors[input.name]?.message}

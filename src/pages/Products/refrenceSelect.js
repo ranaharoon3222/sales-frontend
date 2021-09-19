@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import AsyncSelect from 'react-select/async';
 
+// eslint-disable-next-line react/display-name
 const RefrenceSelect = React.forwardRef(
   ({ path, label = 'name', ...rest }, ref) => {
     const [value, setValue] = useState('');
@@ -13,7 +15,7 @@ const RefrenceSelect = React.forwardRef(
         return data.map((item) => {
           return {
             value: item.id,
-            label: `${item[label]} - ${item.guardian_name}`,
+            label: `${item[label]}`,
           };
         });
       } catch (error) {
