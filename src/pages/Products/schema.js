@@ -5,12 +5,9 @@ export const schema = yup.object().shape({
   item_code: yup.string(),
   sale_price: yup.number(),
   model_no: yup.string(),
-  unit: yup
-    .object()
-    .shape({
-      value: yup.string(),
-    })
-    .typeError('Please Select One Value'),
+  unit: yup.object().shape({
+    value: yup.string(),
+  }),
   opening_stock: yup.number().integer(),
   purchase_price: yup.number().required(),
   brand: yup

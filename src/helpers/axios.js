@@ -11,6 +11,7 @@ export const useFetch = (path, name) => {
   }
 
   const url = name ? baseUrl + path + '/' + name : baseUrl + path;
+
   const {
     data: apiData,
     error,

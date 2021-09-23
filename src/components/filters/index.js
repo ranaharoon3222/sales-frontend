@@ -11,23 +11,22 @@ import Button from '../Button';
 const Index = ({ setValue, value }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    const search = e.target.search;
-    setValue(search.value);
+    const search = e.target.value;
+    setValue(search);
   };
 
   return (
     <SimpleGrid columns={1} spacingX={1} spacingY={1} p={4}>
-      <form onSubmit={handleSubmit}>
-        <InputGroup>
-          <InputLeftElement pointerEvents='none' children={<RiSearchLine />} />
-          <Input
-            placeholder='Search in Products'
-            name='search'
-            defaultValue={value}
-          />
-        </InputGroup>
-        <Button onClick={() => setValue('')}>Clear Search</Button>
-      </form>
+      <InputGroup>
+        <InputLeftElement pointerEvents='none' children={<RiSearchLine />} />
+        <Input
+          onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
+          placeholder='Search in Products'
+          name='search'
+          defaultValue={value}
+        />
+      </InputGroup>
+      {/* <Button onClick={() => setValue('')}>Clear Search</Button> */}
     </SimpleGrid>
   );
 };

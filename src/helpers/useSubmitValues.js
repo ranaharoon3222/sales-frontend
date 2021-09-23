@@ -23,6 +23,9 @@ export const SubmitObject = ({
   const successCase = async () => {
     setLoading(false);
     setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+    }, 2000);
     setError(false);
     mutate && (await mutate());
     toast({
@@ -30,12 +33,13 @@ export const SubmitObject = ({
     });
   };
 
-  const errorCase = (error) => {
+  const errorCase = (error, order) => {
+    const stockMsg = error.response.data.message;
     setSuccess(false);
-    setError(error.message);
+    setError(stockMsg ? stockMsg : error.message);
     setLoading(false);
     toast({
-      title: errorMessage,
+      title: order ? stockMsg : errorMessage,
       status: 'error',
     });
   };

@@ -1,32 +1,34 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from 'pages/Refrence/schema';
-import { useImageUpload } from 'pages/Refrence/useImageUpload';
-import { useStoreActions } from 'easy-peasy';
+import { schema } from './schema';
+
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { SubmitObject } from 'helpers/useSubmitValues';
 
 export const useSubmit = ({
   path,
   method = 'POST',
-  message = 'Refrence Added Succesully',
+  message = 'Order Added Succesully',
   errorMessage = 'Please Check Unique Values',
   mutate = false,
   redirect = false,
   id = false,
 }) => {
-  const saveRefrence = useStoreActions((actions) => actions.Refrences.save);
-  const updateRefrence = useStoreActions((actions) => actions.Refrences.update);
+  const saveOrder = useStoreActions((actions) => actions.Orders.save);
+  const updateOrder = useStoreActions((actions) => actions.Orders.update);
+  const cartItems = useStoreState((state) => state.Orders.cart);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    watch,
+    setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const { handleChange, cnic_image, image } = useImageUpload();
 
   const {
     history,
@@ -42,14 +44,14 @@ export const useSubmit = ({
   } = SubmitObject({ mutate, errorMessage, successMessage: message });
 
   const newValues = (data) => {
-    const house_occupation = data?.house_occupation?.value;
+    const client = data.client?.value;
+
     const updateValues = cleanObjects({
       ...data,
-      image,
-      cnic_image,
-      house_occupation,
+      installments: cartItems?.[0]?.installments,
+      client,
     });
-    console.log(updateValues);
+    console.log(updateValues, 'updateValues');
 
     return updateValues;
   };
@@ -59,16 +61,16 @@ export const useSubmit = ({
     const updateValues = newValues(data);
 
     if (method === 'POST') {
-      saveRefrence(updateValues)
-        .then(() => {
-          successCase();
+      saveOrder(updateValues)
+        .then((e) => {
+          successCase(e);
           redirect && history.push(path);
         })
-        .catch((err) => errorCase(err));
+        .catch((err) => errorCase(err, 'order'));
     } else {
-      updateRefrence({ updateValues, id })
+      updateOrder({ updateValues, id })
         .then(() => successCase())
-        .catch((err) => errorCase(err));
+        .catch((err) => errorCase(err, 'order'));
     }
   };
 
@@ -82,7 +84,9 @@ export const useSubmit = ({
     handleSubmit,
     errors,
     control,
-    handleChange,
+    watch,
+    setValue,
+    reset,
   };
 
   return { onSubmit, submitValues };

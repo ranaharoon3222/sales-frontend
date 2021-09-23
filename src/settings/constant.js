@@ -15,10 +15,11 @@ export const REFRENCES = '/refrences';
 export const ADD_REFRENCES = '/refrences/add';
 export const UPDATE_REFRENCES = '/refrences/:id';
 export const REPORTS = '/reports';
+export const LOGIN = '/login';
 export const GET_RECENT_PRODUCTS = `${PRODUCTS}${RECENT_FILTER}`;
 export const GET_RECENT_CLIENTS = `${CLIENTS}${RECENT_FILTER}`;
 export const GET_RECENT_REFRENCES = `${CLIENTS}${RECENT_FILTER}`;
 export const GET_RECENT_ORDERS = `${ORDERS}${RECENT_FILTER}`;
 export const GET_RECENT_BRANDS = `${BRANDS}${RECENT_FILTER}`;
 
-export const PAGINATION_LIMIT = 5;
+export const PAGINATION_LIMIT = 35;

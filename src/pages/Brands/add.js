@@ -31,7 +31,7 @@ const AddClient = ({ redirect = true }) => {
       {success && successResponse()}
       <Box boxShadow='md' bg='white' p={5}>
         <Text fontSize='3xl' mb={5}>
-          Add Client
+          Add Brand
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
           <SimpleGrid columns={2} spacingX={5} spacingY={3}>

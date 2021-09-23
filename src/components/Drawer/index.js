@@ -10,14 +10,26 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-const UseDrawer = ({ children, isOpen, onClose }) => {
+const UseDrawer = ({
+  children,
+  isOpen,
+  onClose,
+  placement = 'bottom',
+  ...rest
+}) => {
   return (
-    <Drawer placement='bottom' isOpen={isOpen} onClose={onClose}>
+    <Drawer
+      placement={placement}
+      isOpen={isOpen}
+      onClose={onClose}
+      size='md'
+      {...rest}
+    >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton zIndex={99} bg='black' color='white' />
 
-        <DrawerBody>{children}</DrawerBody>
+        <DrawerBody pt={16}>{children}</DrawerBody>
 
         <DrawerFooter>
           <Button variant='outline' mr={3} onClick={onClose}>

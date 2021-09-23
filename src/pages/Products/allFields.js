@@ -102,8 +102,8 @@ export const useFields = ({
             <Select
               options={options}
               defaultValue={{
-                label: apiData?.unit || 'PCS',
-                value: apiData?.unit || 'PCS',
+                label: apiData?.unit || '',
+                value: apiData?.unit || '',
               }}
               {...field}
             />

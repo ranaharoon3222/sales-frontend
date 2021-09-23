@@ -92,25 +92,25 @@ const menuItems = [
   },
 
   {
-    name: 'Orders',
+    name: 'Sales',
     subMenu: [
       {
-        name: 'List Orders',
+        name: 'List Invoice',
         path: menus.ORDERS,
       },
       {
-        name: 'Add Orders',
+        name: 'Add Invoice',
         path: menus.ADD_ORDERS,
       },
     ],
   },
 ];
 
-export default function SidebarWithHeader({ children }) {
+export default function SidebarWithHeader({ children, visibility }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box minH='100vh' bg='gray.100'>
+    <Box minH='100vh' bg='gray.100' display={visibility}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', lg: 'block' }}
@@ -130,7 +130,7 @@ export default function SidebarWithHeader({ children }) {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, lg: 60 }} p='4'>
+      <Box ml={{ base: 0, lg: 44 }} p='4'>
         {children}
       </Box>
     </Box>
@@ -144,7 +144,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       bg='white'
       borderRight='1px'
       borderRightColor='gray.200'
-      w={{ base: 'full', lg: 60 }}
+      w={{ base: 'full', lg: 44 }}
       pos='fixed'
       h='full'
       {...rest}
@@ -190,64 +190,58 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const NavItem = ({ title, children, to, isSub, ...rest }) => {
+  const color = useColorModeValue('inherit', 'gray.400');
+  const bg = useColorModeValue('gray.100', 'gray.900');
+  const hoverColor = useColorModeValue('gray.900', 'gray.200');
+
   return isSub ? (
     <AccordionItem pb={1} pt={1}>
       <AccordionButton _expanded={{ bg: 'purple.500', color: 'white' }}>
-        <Text fontSize='lg' fontWeight='semibold'>
+        <Flex
+          align='center'
+          cursor='pointer'
+          color={color}
+          _hover={{
+            bg,
+            color: hoverColor,
+          }}
+          role='group'
+          fontWeight='semibold'
+          transition='.15s ease'
+        >
           {title}
-        </Text>
+        </Flex>
         <AccordionIcon />
       </AccordionButton>
       {children}
     </AccordionItem>
   ) : (
     <RouterLink to={to} style={{ textDecoration: 'none' }}>
-      <Text
-        fontSize='lg'
-        fontWeight='semibold'
+      <Flex
         pb={3}
-        pt={3}
-        pl={4}
-        _hover={{ bg: 'purple.500', color: 'white' }}
+        pl={3}
+        pt={4}
+        align='center'
+        cursor='pointer'
+        color={color}
+        _hover={{
+          bg,
+          color: hoverColor,
+        }}
+        role='group'
+        fontWeight='semibold'
+        transition='.15s ease'
       >
         {title}
-      </Text>
+      </Flex>
     </RouterLink>
   );
-
-  // <RouterLink to={to} style={{ textDecoration: 'none' }}>
-  //   <Flex
-  //     align='center'
-  //     p='4'
-  //     mx='4'
-  //     borderRadius='lg'
-  //     role='group'
-  //     cursor='pointer'
-  //     _hover={{
-  //       bg: 'primary.500',
-  //       color: 'white',
-  //     }}
-  //     {...rest}
-  //   >
-  //     {icon && (
-  //       <Icon
-  //         mr='4'
-  //         fontSize='16'
-  //         _groupHover={{
-  //           color: 'white',
-  //         }}
-  //         as={icon}
-  //       />
-  //     )}
-  //     {children}
-  //   </Flex>
-  // </RouterLink>
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
   return (
     <Flex
-      ml={{ base: 0, lg: 60 }}
+      ml={{ base: 0, lg: 44 }}
       px={{ base: 4, md: 4 }}
       height='20'
       alignItems='center'

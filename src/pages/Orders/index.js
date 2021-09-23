@@ -21,7 +21,7 @@ import { IoTrashOutline } from 'react-icons/io5';
 
 const Products = () => {
   const history = useHistory();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(undefined);
 
   const query = qs.stringify({
     _where: {
