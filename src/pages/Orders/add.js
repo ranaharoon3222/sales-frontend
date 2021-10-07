@@ -1,6 +1,5 @@
 import { useSubmit } from './useSubmit';
 import { ORDERS } from 'settings/constant';
-import { useFields } from './allFields';
 import Products from './products';
 import Clients from './client';
 import Alert from 'components/Alert';
@@ -11,14 +10,11 @@ const AddOrders = () => {
     redirect: false,
   });
   const {
-    loading,
     error,
     errorResponse,
     success,
     successResponse,
     handleSubmit,
-    register,
-    control,
     errors,
   } = submitValues;
 

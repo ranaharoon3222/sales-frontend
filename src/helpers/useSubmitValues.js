@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useCleanObjects } from 'helpers/useCleanObjects';
 import { useToasts } from 'helpers/useToast';
 import { useHistory } from 'react-router-dom';

@@ -9,7 +9,6 @@ import {
   Th,
   Td,
   Text,
-  SimpleGrid,
   Badge,
 } from '@chakra-ui/react';
 import { generateKey } from 'helpers/useUnique';
@@ -17,7 +16,7 @@ import Skeleton from 'components/skeleton';
 import GetSumValues from 'pages/Reports/getSums';
 
 const Index = () => {
-  const { loading, DateComponent, error, apiData } = useDateRange();
+  const { loading, DateComponent, apiData } = useDateRange();
 
   const columns = apiData?.map((item, index) => {
     const totalPrice = item.total_price;

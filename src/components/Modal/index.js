@@ -5,8 +5,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
-  Button,
   ModalContent,
 } from '@chakra-ui/react';
 
@@ -19,12 +17,6 @@ const Index = ({ children, title, isOpen, onClose }) => {
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='purple' mr={3} onClick={onClose}>
-              Print Receipt
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

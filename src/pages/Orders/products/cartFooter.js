@@ -17,7 +17,7 @@ const CartFooter = ({ watchOrderComp, setValue }) => {
 
   useEffect(() => {
     setValue('total_price', grandTotal);
-  }, [grandTotal]);
+  }, [grandTotal, setValue]);
 
   const footerValues = [
     {

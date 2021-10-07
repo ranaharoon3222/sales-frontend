@@ -27,6 +27,7 @@ import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
 
 import { Link as RouterLink } from 'react-router-dom';
 import * as menus from '../../settings/constant';
+import { useStoreActions } from 'easy-peasy';
 
 const menuItems = [
   {
@@ -239,6 +240,7 @@ const NavItem = ({ title, children, to, isSub, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const logOut = useStoreActions((actions) => actions.Auth.logOut);
   return (
     <Flex
       ml={{ base: 0, lg: 44 }}
@@ -305,10 +307,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
               <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={logOut}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

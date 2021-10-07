@@ -6,7 +6,6 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerOverlay,
-  DrawerHeader,
   Button,
 } from '@chakra-ui/react';
 

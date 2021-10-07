@@ -9,28 +9,6 @@ const Index = ({ submitValues }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { control, register } = submitValues;
 
-  const allFields = [
-    {
-      name: 'clients',
-      component: (
-        <Controller
-          name='clients'
-          control={control}
-          render={({ field }) => <ClientSelect path='clients' {...field} />}
-        />
-      ),
-      custom: true,
-    },
-
-    {
-      name: 'occupation',
-    },
-
-    {
-      name: 'work_place',
-    },
-  ];
-
   return (
     <div>
       <Box d='flex' justifyContent='flex-end' py={3}>

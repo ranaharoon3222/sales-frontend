@@ -44,7 +44,7 @@ const useInstallments = ({ item }) => {
       (ins) => ins.invoice !== '0'
     );
     updateCart({ installments: newInstallment, id: item.id });
-  }, [installmentsItem]);
+  }, [installmentsItem, item.id, updateCart]);
 
   return {
     installmentsItem,

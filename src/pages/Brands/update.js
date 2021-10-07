@@ -1,4 +1,4 @@
-import { SimpleGrid, Box, Text, Image } from '@chakra-ui/react';
+import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import CustomInput from 'components/input';
 import { useSubmit } from 'pages/Brands/useSubmit';
 import { BRANDS } from 'settings/constant';

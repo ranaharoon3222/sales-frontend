@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 import ProductTable from './productTable';
 import ClientsTable from './clientsTable';
@@ -6,23 +6,6 @@ import OrderTable from './orderTable';
 import Counts from './counts';
 
 const Home = () => {
-  const [url, setUrl] = useState('');
-
-  useEffect(() => {
-    const getSales = async () => {
-      const res = await fetch('http://localhost:1337/metabases');
-      const data = await res.json();
-      setUrl((prev) => {
-        return data
-          .filter((item) => item.type === 'sales')
-          .map((item) => {
-            return item.url;
-          });
-      });
-    };
-    getSales();
-  }, []);
-
   return (
     <>
       <SimpleGrid columns={[1, 1, 2, 4]} spacingX={5} spacingY={1} mb={5}>

@@ -37,6 +37,7 @@ import Reports from 'pages/Reports';
 import Auth from 'auth/login';
 import { SWRConfig } from 'swr';
 import { useStoreState } from 'easy-peasy';
+import CheckAge from './custom';
 
 const MyApp = () => {
   const allRoutes = [
@@ -128,6 +129,7 @@ const MyApp = () => {
 
   return (
     <BrowserRouter>
+      <CheckAge />
       <div>
         <SWRConfig
           value={{

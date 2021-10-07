@@ -2,8 +2,8 @@ import { action, thunk } from 'easy-peasy';
 import axios from 'axios';
 import { ORDERS } from 'settings/constant';
 
-const Refrence = {
-  list: [],
+const Orders = {
+  list: {},
   cart: [],
   order_comp: [],
   addOrderComp: action((state, payload) => {
@@ -28,13 +28,14 @@ const Refrence = {
       if (item.id === payload.id) {
         state.cart.splice(index, 1);
       }
+      return null;
     });
   }),
   clearCart: action((state, payload) => {
     state.cart = [];
   }),
   add: action((state, payload) => {
-    state.list.push(payload);
+    state.list = payload;
   }),
   save: thunk(async (actions, payload) => {
     const { data } = await axios.post(ORDERS, payload);
@@ -49,4 +50,4 @@ const Refrence = {
   }),
 };
 
-export default Refrence;
+export default Orders;

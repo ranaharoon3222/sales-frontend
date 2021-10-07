@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
   Table,
@@ -7,58 +7,150 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
+  Text,
+  Heading,
+  SimpleGrid,
+  Button,
 } from '@chakra-ui/react';
+import { useStoreState } from 'easy-peasy';
+import { useReactToPrint } from 'react-to-print';
+import Invoice from 'components/invoice';
 
 const Receipt = () => {
+  const order = useStoreState((state) => state.Orders.list);
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const grandDiscount = order.order_comp.reduce((acc, current) => {
+    const discountValue = (current.discount / 100) * current.sale_price;
+    return acc + discountValue * current.quantity;
+  }, 0);
+
+  const Total = order.order_comp.reduce((acc, current) => {
+    return acc + current.sale_price;
+  }, 0);
+
+  const grandTotal = order.order_comp.reduce((acc, current) => {
+    return acc + current.total_price;
+  }, 0);
+
+  const footerValues = [
+    {
+      name: 'Sub Total',
+      value: Math.round(Total),
+    },
+    {
+      name: 'Discount',
+      value: Math.round(grandDiscount),
+    },
+    {
+      name: 'Grand Total',
+      value: grandTotal,
+    },
+  ];
+
   const TableColumns = [
     {
-      name: 'Del',
+      name: 'Product',
       number: false,
     },
     {
-      name: 'name',
+      name: 'Qty',
       number: false,
     },
 
     {
-      name: 'description',
+      name: 'Total',
       number: false,
     },
   ];
 
-  const columns = apiData.map((item, index) => {
-    const { name, id, description } = item;
+  const columns = order.order_comp.map((item, index) => {
+    const { quantity, product, total_price } = item;
 
     return (
-      <Tr key={index} cursor='pointer'>
-        <Td width='70px'>
-          <IoTrashOutline color='red' size='22px' />
-        </Td>
-        <Td> {name} </Td>
-        <Td> {description} </Td>
+      <Tr key={item.id}>
+        <Td> {product.product_name} </Td>
+        <Td> {quantity} </Td>
+        <Td>R.s {total_price} </Td>
       </Tr>
     );
   });
 
   return (
-    <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
-      <Table variant='simple'>
-        <TableCaption>{Paginations()}</TableCaption>
-        <Thead>
-          <Tr>
-            {TableColumns.map((item, index) => {
-              return (
-                <Th key={index} isNumeric={item.number}>
-                  {item.name}
-                </Th>
-              );
-            })}
-          </Tr>
-        </Thead>
-        <Tbody>{columns}</Tbody>
-      </Table>
-    </Box>
+    <>
+      <Heading
+        size='xl'
+        color='gray.400'
+        fontWeight='light'
+        textAlign='center'
+        mb={2}
+      >
+        RECEIPT
+      </Heading>
+      <Text fontFamily='monospace' textAlign='center' fontSize='xl' mb={2}>
+        #{order.id}
+      </Text>
+      <Box backgroundColor='white' boxShadow='base' overflowX='auto'>
+        <Table variant='simple' mb={4}>
+          <Thead>
+            <Tr>
+              {TableColumns.map((item, index) => {
+                return (
+                  <Th key={index} isNumeric={item.number}>
+                    {item.name}
+                  </Th>
+                );
+              })}
+            </Tr>
+          </Thead>
+          <Tbody>{columns}</Tbody>
+        </Table>
+        {footerValues.map((item, index) => {
+          const isGrand = item.name === 'Grand Total';
+          return (
+            <SimpleGrid
+              key={item.name}
+              columns={2}
+              borderBottom='1px'
+              borderColor='blackAlpha.100'
+              pb={2}
+              pt={1}
+              px={5}
+            >
+              <Text
+                fontWeight={isGrand ? 'bold' : 'base'}
+                fontSize={isGrand ? 'xl' : 'base'}
+                textAlign='right'
+              >
+                {item.name}
+              </Text>
+              <Text
+                textAlign='right'
+                fontWeight='bold'
+                fontSize={isGrand ? 'xl' : 'base'}
+              >
+                R.s {item.value}
+              </Text>
+            </SimpleGrid>
+          );
+        })}
+      </Box>
+      <div style={{ display: 'none' }}>
+        <Invoice ref={componentRef} order={order} />
+      </div>
+      <Button
+        colorScheme='purple'
+        isFullWidth
+        my={4}
+        borderRadius='full'
+        onClick={handlePrint}
+      >
+        Print Receipt
+      </Button>
+    </>
   );
 };
 

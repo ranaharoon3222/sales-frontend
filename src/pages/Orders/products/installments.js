@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from 'components/input';
-import { Button, Box, Select, SimpleGrid, Text } from '@chakra-ui/react';
+import { Button, Box, Select } from '@chakra-ui/react';
 import Drawer from 'components/Drawer';
 import useInstallments from './useInstallment';
 

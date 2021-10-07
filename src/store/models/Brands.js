@@ -2,7 +2,7 @@ import { action, thunk } from 'easy-peasy';
 import axios from 'axios';
 import { BRANDS } from 'settings/constant';
 
-export default {
+const Brands = {
   list: [],
   add: action((state, payload) => {
     state.list.push(payload);
@@ -19,3 +19,5 @@ export default {
     actions.add(data);
   }),
 };
+
+export default Brands;

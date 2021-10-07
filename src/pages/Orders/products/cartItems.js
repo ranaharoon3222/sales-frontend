@@ -16,7 +16,7 @@ const CartItems = ({ register, item, index, remove, field, setValue }) => {
 
   useEffect(() => {
     setValue(`order_comp.${index}.total_price`, Math.round(total_price));
-  }, [total_price]);
+  }, [index, setValue, total_price]);
 
   return (
     <>

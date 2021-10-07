@@ -15,6 +15,7 @@ import { useFieldArray } from 'react-hook-form';
 import CartFooter from './cartFooter';
 import Products from './products';
 import Modal from 'components/Modal';
+import Receipt from './receipt';
 
 const Index = ({ submitValues }) => {
   const { register, control, watch, setValue, success, reset } = submitValues;
@@ -34,17 +35,17 @@ const Index = ({ submitValues }) => {
   const [value, setValues] = useState('');
 
   useEffect(() => {
-    if (fields.length <= 0) {
+    if (fields.length <= 0 && isOpen === false) {
       clearCart();
     }
-  }, [fields]);
+  }, [clearCart, fields, isOpen]);
 
   useEffect(() => {
     if (success) {
       reset();
       onOpen();
     }
-  }, [success]);
+  }, [onOpen, reset, success]);
 
   console.log(fields);
   return (
@@ -78,7 +79,7 @@ const Index = ({ submitValues }) => {
           <CartFooter watchOrderComp={watchOrderComp} setValue={setValue} />
 
           <Modal isOpen={isOpen} onClose={onClose}>
-            <p>Lorem</p>
+            <Receipt />
           </Modal>
           {console.log(success)}
           <SimpleGrid columns={2} mt={3}>

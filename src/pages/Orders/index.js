@@ -15,12 +15,12 @@ import { usePagination } from '../../helpers/usePagination';
 import Filters from '../../components/filters';
 import qs from 'qs';
 import { ORDERS, PAGINATION_LIMIT } from '../../settings/constant';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { useDelete } from 'helpers/useSingleDelete';
 import { IoTrashOutline } from 'react-icons/io5';
 
 const Products = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const [value, setValue] = useState(undefined);
 
   const query = qs.stringify({
@@ -115,9 +115,9 @@ const Products = () => {
       advance,
     } = item;
 
-    const pushToSinglePage = () => {
-      history.push(`${ORDERS}/${id}`);
-    };
+    // const pushToSinglePage = () => {
+    //   history.push(`${ORDERS}/${id}`);
+    // };
 
     return (
       <Tr key={index} cursor='pointer'>

@@ -6,7 +6,6 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react';
 import { RiSearchLine } from 'react-icons/ri';
-import Button from '../Button';
 
 const Index = ({ setValue, value }) => {
   const handleSubmit = (e) => {
