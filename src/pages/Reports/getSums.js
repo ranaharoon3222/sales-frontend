@@ -24,16 +24,16 @@ const GetSums = ({ apiData }) => {
       value: saleTotal,
     },
     {
-      label: 'Total Values',
+      label: 'Total Price With Discount',
       value: total,
     },
     {
       label: 'Total Profit',
-      value: total - purchasePrice,
+      value: saleTotal - purchasePrice,
     },
     {
       label: 'Total Discounted',
-      value: total - saleTotal,
+      value: saleTotal - total,
     },
   ];
 

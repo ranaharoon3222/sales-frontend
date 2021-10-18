@@ -14,6 +14,7 @@ export const schema = yup.object().shape({
     value: yup.number(),
   }),
   name: yup.string().required(),
+  shipping: yup.number().nullable(),
   // mobile_no: yup.string().required(),
   // guardian_name: yup.string(),
   // prefered_address: yup.string(),

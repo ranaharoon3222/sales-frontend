@@ -1,16 +1,27 @@
-import React from 'react';
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import CustomInput from 'components/input';
-import { useSubmit } from 'pages/Products/useSubmit';
-import { PRODUCTS } from 'settings/constant';
-import { useFields } from 'pages/Products/allFields';
+import { useSubmit } from 'pages/Profile/useSubmit';
+import { PROFILE } from 'settings/constant';
+import { useParams } from 'react-router-dom';
+import { useFetch } from 'helpers/axios';
+import Skeleton from 'components/skeleton';
+import { useFields } from 'pages/Profile/allFields';
 import Button from 'components/Button';
 
-// eslint-disable-next-line react/prop-types
-const AddClient = ({ redirect = true }) => {
+const UpdateBrand = () => {
+  let { id } = useParams();
+  const {
+    apiData,
+    loading: apiLoading,
+    error: apiError,
+    mutate,
+  } = useFetch(`${PROFILE}/${id}`);
+
   const { submitValues, onSubmit } = useSubmit({
-    path: PRODUCTS,
-    redirect,
+    path: `${PROFILE}/${id}`,
+    method: 'PUT',
+    mutate,
+    id,
   });
   const {
     loading,
@@ -18,21 +29,30 @@ const AddClient = ({ redirect = true }) => {
     errorResponse,
     success,
     successResponse,
+    handleChange,
     handleSubmit,
     register,
+    control,
     errors,
   } = submitValues;
 
-  const { allFields } = useFields({ submitValues });
+  const { allFields } = useFields({ handleChange, control, apiData });
+
+  if (apiLoading) {
+    return <Skeleton />;
+  }
+
+  if (apiError) {
+    return apiError.message;
+  }
 
   return (
     <div>
       {error && errorResponse()}
       {success && successResponse()}
-
       <Box boxShadow='md' bg='white' p={5}>
         <Text fontSize='3xl' mb={5}>
-          Add Product
+          Update Profile
         </Text>
         <form onSubmit={handleSubmit(onSubmit)}>
           <SimpleGrid columns={2} spacingX={5} spacingY={3}>
@@ -49,7 +69,7 @@ const AddClient = ({ redirect = true }) => {
                       name={input.name}
                       placeholder={input.name.toUpperCase()}
                       type={input.type ? input.type : 'text'}
-                      value={input.value || ''}
+                      value={input.value}
                       onChange={input.onChange}
                       disabled={input.disabled}
                       error={errors[input.name]?.message}
@@ -60,7 +80,7 @@ const AddClient = ({ redirect = true }) => {
                       {...register(input.name)}
                       placeholder={input.name.toUpperCase()}
                       type={input.type ? input.type : 'text'}
-                      defaultValue={input.type !== 'number' ? '' : 0}
+                      defaultValue={apiData[input.name]}
                       disabled={input.disabled}
                       error={errors[input.name]?.message}
                     />
@@ -79,4 +99,4 @@ const AddClient = ({ redirect = true }) => {
   );
 };
 
-export default AddClient;
+export default UpdateBrand;

@@ -18,6 +18,9 @@ import {
   ADD_REFRENCES,
   REPORTS,
   UPDATE_REFRENCES,
+  PROFILE,
+  ADD_PROFILE,
+  UPDATE_PROFILE,
 } from './settings/constant';
 import Products from 'pages/Products';
 import AddProducts from 'pages/Products/add';
@@ -33,17 +36,25 @@ import AddOrders from 'pages/Orders/add';
 import Refrences from 'pages/Refrence/';
 import UpdateRefrences from 'pages/Refrence/update';
 import AddRefrences from 'pages/Refrence/add';
+import Profiles from 'pages/Profile';
+import UpdateProfiles from 'pages/Profile/update';
+import AddProfiles from 'pages/Profile/add';
 import Reports from 'pages/Reports';
 import Auth from 'auth/login';
+import Installments from 'pages/installments';
 import { SWRConfig } from 'swr';
 import { useStoreState } from 'easy-peasy';
-import CheckAge from './custom';
 
 const MyApp = () => {
   const allRoutes = [
     {
       path: '/',
       compnent: <Home />,
+      exact: true,
+    },
+    {
+      path: '/installments',
+      compnent: <Installments />,
       exact: true,
     },
     {
@@ -104,6 +115,21 @@ const MyApp = () => {
       exact: false,
     },
     {
+      path: PROFILE,
+      compnent: <Profiles />,
+      exact: true,
+    },
+    {
+      path: ADD_PROFILE,
+      compnent: <AddProfiles />,
+      exact: true,
+    },
+    {
+      path: UPDATE_PROFILE,
+      compnent: <UpdateProfiles />,
+      exact: false,
+    },
+    {
       path: REFRENCES,
       compnent: <Refrences />,
       exact: true,
@@ -129,7 +155,6 @@ const MyApp = () => {
 
   return (
     <BrowserRouter>
-      <CheckAge />
       <div>
         <SWRConfig
           value={{

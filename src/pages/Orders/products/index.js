@@ -31,6 +31,7 @@ const Index = ({ submitValues }) => {
   });
 
   const watchOrderComp = watch('order_comp');
+  const watchShipping = watch('shipping');
 
   const [value, setValues] = useState('');
 
@@ -76,10 +77,15 @@ const Index = ({ submitValues }) => {
             ))}
           </Box>
 
-          <CartFooter watchOrderComp={watchOrderComp} setValue={setValue} />
+          <CartFooter
+            watchOrderComp={watchOrderComp}
+            register={register}
+            setValue={setValue}
+            watchShipping={watchShipping}
+          />
 
           <Modal isOpen={isOpen} onClose={onClose}>
-            <Receipt />
+            <Receipt watchShipping={watchShipping} />
           </Modal>
           {console.log(success)}
           <SimpleGrid columns={2} mt={3}>

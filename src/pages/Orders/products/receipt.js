@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Box,
   Table,
@@ -12,12 +12,14 @@ import {
   SimpleGrid,
   Button,
 } from '@chakra-ui/react';
-import { useStoreState } from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useReactToPrint } from 'react-to-print';
 import Invoice from 'components/invoice';
 
-const Receipt = () => {
+const Receipt = ({ watchShipping }) => {
   const order = useStoreState((state) => state.Orders.list);
+  const profile = useStoreState((state) => state.Profile.list);
+  const loadProfile = useStoreActions((action) => action.Profile.load);
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -38,6 +40,10 @@ const Receipt = () => {
 
   const footerValues = [
     {
+      name: 'Shipping',
+      value: order?.shipping,
+    },
+    {
       name: 'Sub Total',
       value: Math.round(Total),
     },
@@ -47,7 +53,7 @@ const Receipt = () => {
     },
     {
       name: 'Grand Total',
-      value: grandTotal,
+      value: grandTotal + order?.shipping,
     },
   ];
 
@@ -66,6 +72,10 @@ const Receipt = () => {
       number: false,
     },
   ];
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   const columns = order.order_comp.map((item, index) => {
     const { quantity, product, total_price } = item;
@@ -88,7 +98,7 @@ const Receipt = () => {
         textAlign='center'
         mb={2}
       >
-        RECEIPT
+        {profile?.[0]?.name}
       </Heading>
       <Text fontFamily='monospace' textAlign='center' fontSize='xl' mb={2}>
         #{order.id}
@@ -139,7 +149,7 @@ const Receipt = () => {
         })}
       </Box>
       <div style={{ display: 'none' }}>
-        <Invoice ref={componentRef} order={order} />
+        <Invoice ref={componentRef} order={order} profile={profile[0]} />
       </div>
       <Button
         colorScheme='purple'

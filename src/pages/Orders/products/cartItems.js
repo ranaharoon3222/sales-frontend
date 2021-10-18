@@ -20,7 +20,12 @@ const CartItems = ({ register, item, index, remove, field, setValue }) => {
 
   return (
     <>
-      <Installments isOpen={isOpen} onClose={onClose} item={item[index]} />
+      <Installments
+        register={register}
+        isOpen={isOpen}
+        onClose={onClose}
+        item={item[index]}
+      />
 
       <Grid
         templateColumns='repeat(8, 1fr)'

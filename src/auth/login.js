@@ -20,12 +20,12 @@ import { useHistory } from 'react-router-dom';
 const avatars = [
   {
     name: 'Ryan Florence',
-    url: 'https://bit.ly/ryan-florence',
+    url: '/haroon.JPG',
   },
 
   {
     name: 'Christian Nwamba',
-    url: 'https://bit.ly/code-beast',
+    url: '/basit.jpeg',
   },
 ];
 
@@ -83,6 +83,7 @@ export default function JoinOurTeam() {
                     name={avatar.name}
                     src={avatar.url}
                     size={breakPoint}
+                    objectPosition={'top'}
                     position={'relative'}
                     zIndex={2}
                     _before={{

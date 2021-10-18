@@ -12,7 +12,7 @@ import {
   Heading,
 } from '@chakra-ui/react';
 
-const Index = React.forwardRef(({ order }, ref) => {
+const Index = React.forwardRef(({ order, profile }, ref) => {
   const grandDiscount = order.order_comp.reduce((acc, current) => {
     const discountValue = (current.discount / 100) * current.sale_price;
     return acc + discountValue * current.quantity;
@@ -28,6 +28,10 @@ const Index = React.forwardRef(({ order }, ref) => {
 
   const footerValues = [
     {
+      name: 'Shipping',
+      value: order?.shipping,
+    },
+    {
       name: 'Sub Total',
       value: Math.round(Total),
     },
@@ -37,7 +41,7 @@ const Index = React.forwardRef(({ order }, ref) => {
     },
     {
       name: 'Grand Total',
-      value: grandTotal,
+      value: grandTotal + order?.shipping,
     },
   ];
 
@@ -72,6 +76,10 @@ const Index = React.forwardRef(({ order }, ref) => {
       </Tr>
     );
   });
+  const company = profile?.name;
+  const address = profile?.address;
+  const remarks = profile?.remarks;
+  const mobile = profile?.mobile;
 
   return (
     <Box ref={ref} py={5} px={5}>
@@ -82,10 +90,16 @@ const Index = React.forwardRef(({ order }, ref) => {
         textAlign='center'
         mb={2}
       >
-        RECEIPT
+        {company}
       </Heading>
+      <Text textAlign='center' fontSize='sm' mb={2}>
+        {address}
+      </Text>
+      <Text textAlign='center' fontSize='sm' mb={2}>
+        {mobile}
+      </Text>
       <Text fontFamily='monospace' textAlign='center' fontSize='xl' mb={2}>
-        #{order.id}
+        Invoice #{order.id}
       </Text>
       <Box backgroundColor='white' overflowX='auto'>
         <Table variant='simple' mb={4}>
@@ -136,6 +150,9 @@ const Index = React.forwardRef(({ order }, ref) => {
           );
         })}
       </Box>
+      <Text textAlign='center' fontSize='sm' mb={2} mt={6}>
+        {remarks}
+      </Text>
     </Box>
   );
 });

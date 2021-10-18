@@ -4,7 +4,7 @@ import { Button, Box, Select } from '@chakra-ui/react';
 import Drawer from 'components/Drawer';
 import useInstallments from './useInstallment';
 
-const Installments = ({ isOpen, onClose, item }) => {
+const Installments = ({ isOpen, onClose, item, register }) => {
   const {
     handleAddClick,
     handleInputChange,
@@ -19,6 +19,7 @@ const Installments = ({ isOpen, onClose, item }) => {
           label={'Advance'}
           // value={advance}
           // onChange={handleChange}
+          {...register('advance')}
           name='advance'
           type='number'
         />

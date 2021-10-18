@@ -20,6 +20,14 @@ const Index = () => {
 
   const columns = apiData?.map((item, index) => {
     const totalPrice = item.total_price;
+    const date = new Date(item.created_at);
+
+    var options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: '2-digit',
+      day: 'numeric',
+    };
 
     return (
       <Tr key={generateKey(item.id)}>
@@ -33,7 +41,7 @@ const Index = () => {
             );
           })}
         </Td>
-        <Td>{item.invoice_date}</Td>
+        <Td>{date.toLocaleDateString('en', options)}</Td>
         <Td>{totalPrice}</Td>
       </Tr>
     );
@@ -56,7 +64,7 @@ const Index = () => {
               align='center'
               fontWeight='semibold'
             >
-              Recent Orders
+              Orders History
             </Text>
             <Table variant='simple'>
               <Thead>

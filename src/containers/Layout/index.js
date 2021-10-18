@@ -103,6 +103,10 @@ const menuItems = [
         name: 'Add Invoice',
         path: menus.ADD_ORDERS,
       },
+      {
+        name: 'Installments',
+        path: '/installments',
+      },
     ],
   },
 ];
@@ -306,7 +310,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem>Profile</MenuItem>
+              <RouterLink to={menus.PROFILE}>
+                <MenuItem>Profile</MenuItem>
+              </RouterLink>
               <MenuDivider />
               <MenuItem onClick={logOut}>Sign out</MenuItem>
             </MenuList>

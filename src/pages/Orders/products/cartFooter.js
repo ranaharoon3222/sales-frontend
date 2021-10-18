@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { SimpleGrid, Text } from '@chakra-ui/layout';
+import { Box, SimpleGrid, Text, Badge } from '@chakra-ui/layout';
+import Popover from './poprover';
+import Input from 'components/input';
 
-const CartFooter = ({ watchOrderComp, setValue }) => {
+const CartFooter = ({ watchOrderComp, setValue, register, watchShipping }) => {
   const grandDiscount = watchOrderComp?.reduce((acc, current) => {
     const discountValue = (current.discount / 100) * current.sale_price;
     return acc + discountValue * current.quantity;
@@ -21,16 +23,47 @@ const CartFooter = ({ watchOrderComp, setValue }) => {
 
   const footerValues = [
     {
+      name: (
+        <>
+          <Box as='span'>Shipping </Box>
+          <Badge colorScheme='purple'>{watchShipping}</Badge>
+        </>
+      ),
+      value: (
+        <Popover
+          trigger={
+            <Text
+              fontSize='xs'
+              textAlign='right'
+              color='Highlight'
+              cursor='pointer'
+            >
+              Add Shipping
+            </Text>
+          }
+        >
+          <Input
+            color='black'
+            name='shipping'
+            {...register('shipping')}
+            type='number'
+            placeholder='Add Shipping'
+            defaultValue={0}
+          />
+        </Popover>
+      ),
+    },
+    {
       name: 'Sub Total',
-      value: Math.round(Total),
+      value: 'R.s ' + Math.round(Total),
     },
     {
       name: 'Discount',
-      value: Math.round(grandDiscount),
+      value: 'R.s -' + Math.round(grandDiscount),
     },
     {
       name: 'Grand Total',
-      value: grandTotal,
+      value: 'R.s ' + (grandTotal + Number(watchShipping)),
     },
   ];
   return (
@@ -52,13 +85,14 @@ const CartFooter = ({ watchOrderComp, setValue }) => {
             >
               {item.name}
             </Text>
-            <Text
+            <Box
+              as={'div'}
               textAlign='right'
               fontWeight='bold'
               fontSize={isGrand ? '2xl' : 'base'}
             >
-              R.s {item.value}
-            </Text>
+              {item.value}
+            </Box>
           </SimpleGrid>
         );
       })}

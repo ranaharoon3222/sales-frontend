@@ -5,6 +5,7 @@ import Brands from 'store/models/Brands';
 import Products from 'store/models/Products';
 import Auth from 'store/models/Auth';
 import Orders from 'store/models/Orders';
+import Profile from 'store/models/Profile';
 
 const store = createStore({
   Refrences,
@@ -12,6 +13,7 @@ const store = createStore({
   Brands,
   Products,
   Orders,
+  Profile,
   Auth: persist(Auth, {
     storage: 'localStorage',
   }),

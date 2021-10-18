@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import { usePagination } from 'helpers/usePagination';
 import qs from 'qs';
@@ -12,11 +12,18 @@ const Products = ({ cartItems, append, addToCart, value }) => {
     },
   });
 
-  const { apiData, loading, error, Paginations } = usePagination({
+  const { apiData, loading, error, Paginations, mutate } = usePagination({
     path: PRODUCTS,
     filters: `&${query}`,
     limit: PAGINATION_LIMIT,
   });
+
+  useEffect(() => {
+    const refectch = async () => {
+      await mutate();
+    };
+    refectch();
+  }, [cartItems, mutate]);
 
   if (loading) {
     return <Skeletn />;
