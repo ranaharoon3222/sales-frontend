@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Table,
@@ -11,6 +11,7 @@ import {
   SimpleGrid,
   Heading,
 } from '@chakra-ui/react';
+import axios from 'axios';
 
 const Index = React.forwardRef(({ order, profile }, ref) => {
   const grandDiscount = order.order_comp.reduce((acc, current) => {
@@ -51,6 +52,10 @@ const Index = React.forwardRef(({ order, profile }, ref) => {
       number: false,
     },
     {
+      name: 'Brand',
+      number: false,
+    },
+    {
       name: 'Qty',
       number: true,
     },
@@ -64,12 +69,26 @@ const Index = React.forwardRef(({ order, profile }, ref) => {
     },
   ];
 
+  const [brand, setBrand] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`/brands`)
+      .then((item) => {
+        return setBrand(item.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const columns = order.order_comp.map((item, index) => {
     const { quantity, product, sale_price, total_price } = item;
+
+    const brandName = brand.filter((item) => item.id === product.brand);
 
     return (
       <Tr key={item.id} borderBottomWidth='1px' borderColor='gray.100'>
         <Td> {product.product_name} </Td>
+        <Td> {brandName?.[0]?.name} </Td>
         <Td isNumeric> {quantity} </Td>
         <Td isNumeric> R.s {sale_price} </Td>
         <Td isNumeric>R.s {total_price} </Td>
@@ -98,9 +117,25 @@ const Index = React.forwardRef(({ order, profile }, ref) => {
       <Text textAlign='center' fontSize='sm' mb={2}>
         {mobile}
       </Text>
-      <Text fontFamily='monospace' textAlign='center' fontSize='xl' mb={2}>
-        Invoice #{order.id}
-      </Text>
+      <SimpleGrid columns={2}>
+        <Box>
+          <Text textAlign='left' fontSize='base' mb={2}>
+            <b>Name:</b> {order.name || order?.client?.Name}
+          </Text>
+          <Text textAlign='left' fontSize='base' mb={2}>
+            <b>Address: </b> {order.address || order?.client?.permanent_address}
+          </Text>
+          <Text textAlign='left' fontSize='base' mb={2}>
+            <b> Contact No:</b> {order.contact_no || order?.client?.mobile_no}
+          </Text>
+        </Box>
+        <Box>
+          <Text fontFamily='monospace' textAlign='right' fontSize='xl' mb={2}>
+            Invoice #{order.id}
+          </Text>
+        </Box>
+      </SimpleGrid>
+
       <Box backgroundColor='white' overflowX='auto'>
         <Table variant='simple' mb={4}>
           <Thead
